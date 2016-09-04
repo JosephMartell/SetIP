@@ -8,7 +8,6 @@ using SetIPLib;
 namespace SetIPCLI {
     class Program {
 
-        private static List<Profile> _profiles = new List<Profile>();
         static void Main(string[] args) {
 
         }
