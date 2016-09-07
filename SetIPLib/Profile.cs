@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
+﻿using System.Net;
 
 namespace SetIPLib {
 
@@ -12,6 +7,12 @@ namespace SetIPLib {
 
         public string Name {
             get { return _name; }
+        }
+
+        protected readonly bool _useDHCP;
+
+        public bool UseDHCP {
+            get { return _useDHCP; }
         }
 
         private IPAddress _ip;
@@ -24,6 +25,13 @@ namespace SetIPLib {
 
         public IPAddress Subnet {
             get { return _subnet; }
+        }
+
+        public Profile(string name) {
+            _name = name;
+            _useDHCP = true;
+            _ip = IPAddress.None;
+            _subnet = IPAddress.None;
         }
 
         public Profile(string name, IPAddress ip, IPAddress subnet) {

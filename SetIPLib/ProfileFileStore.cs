@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SetIPLib {
 
@@ -11,10 +8,7 @@ namespace SetIPLib {
     /// Allows the storage and retrieval of Profiles to a file as XML.
     /// </summary>
     /// 
-    //TODO: extract an interface so other storage types could be created, if desired.
-    public class ProfileFileStore {
-
-        private System.IO.TextWriter tw;
+    public class ProfileFileStore : IProfileStore {
 
         private string _filePath;
 
@@ -22,8 +16,47 @@ namespace SetIPLib {
             get { return _filePath; }
         }
 
-        public void Store(Profile profile) {
+        protected readonly IProfileEncoder _encoder;
 
+        public IProfileEncoder Encoder {
+            get { return _encoder; }
+        }
+
+        public IEnumerable<Profile> Retrieve() {
+            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
+                byte[] contents = new byte[fs.Length];
+                try {
+                    if (fs.Length < int.MaxValue) {
+                        fs.Read(contents, 0, (int)fs.Length);
+                    }
+
+                }
+                finally {
+                    if (fs != null) {
+                        fs.Close();
+                    }
+                }
+                return Encoder.Decode(contents);
+            }
+        }
+
+        public void Store(IEnumerable<Profile> profiles) {
+            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Create)) {
+                try {
+                    fs.Write(Encoder.Header, 0, Encoder.Header.Length);
+
+                    foreach (var p in profiles) {
+                        byte[] pBytes = Encoder.Encode(p);
+                        fs.Write(pBytes, 0, pBytes.Length);
+                    }
+                    fs.Write(Encoder.Footer, 0, Encoder.Footer.Length);
+                }
+                finally {
+                    if (fs != null) {
+                        fs.Close();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -31,7 +64,11 @@ namespace SetIPLib {
         /// the default XML Profile encoder.
         /// </summary>
         public ProfileFileStore() {
+            var directory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP");
+            System.IO.Directory.CreateDirectory(directory);
 
+            _filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
+            _encoder = new XMLProfileEncoder();
         }
 
         /// <summary>
@@ -40,6 +77,8 @@ namespace SetIPLib {
         /// </summary>
         /// <param name="filePath">Full path to file, including file name.</param>
         public ProfileFileStore(string filePath) {
+            _filePath = filePath;
+            _encoder = new XMLProfileEncoder();
         }
 
         /// <summary>
@@ -49,7 +88,8 @@ namespace SetIPLib {
         /// <param name="filePath">Full path to file, including file name.</param>
         /// <param name="encoder">Encoder used to write profile information to the specified file.</param>
         public ProfileFileStore(string filePath, IProfileEncoder encoder) {
-
+            _filePath = filePath;
+            _encoder = encoder;
         }
 
     }

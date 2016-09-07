@@ -41,9 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IProfileEncoder.cs" />
+    <Compile Include="IProfileStore.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ProfileFileStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLProfileEncoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
