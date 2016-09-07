@@ -43,6 +43,7 @@
     <Compile Include="IProfileEncoder.cs" />
     <Compile Include="IProfileStore.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="ProfileApplier.cs" />
     <Compile Include="ProfileFileStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLProfileEncoder.cs" />
