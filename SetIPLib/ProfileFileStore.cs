@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SetIPLib {
 
@@ -10,17 +11,9 @@ namespace SetIPLib {
     /// 
     public class ProfileFileStore : IProfileStore {
 
-        private string _filePath;
+        public string FilePath { get; } = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
 
-        public string FilePath {
-            get { return _filePath; }
-        }
-
-        protected readonly IProfileEncoder _encoder;
-
-        public IProfileEncoder Encoder {
-            get { return _encoder; }
-        }
+        public IProfileEncoder Encoder { get; } = new XMLProfileEncoder();
 
         public IEnumerable<Profile> Retrieve() {
             using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
@@ -38,6 +31,10 @@ namespace SetIPLib {
                 }
                 return Encoder.Decode(contents);
             }
+        }
+
+        private void CheckDirectory() {
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         }
 
         public void Store(IEnumerable<Profile> profiles) {
@@ -64,11 +61,6 @@ namespace SetIPLib {
         /// the default XML Profile encoder.
         /// </summary>
         public ProfileFileStore() {
-            var directory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP");
-            System.IO.Directory.CreateDirectory(directory);
-
-            _filePath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
-            _encoder = new XMLProfileEncoder();
         }
 
         /// <summary>
@@ -77,8 +69,7 @@ namespace SetIPLib {
         /// </summary>
         /// <param name="filePath">Full path to file, including file name.</param>
         public ProfileFileStore(string filePath) {
-            _filePath = filePath;
-            _encoder = new XMLProfileEncoder();
+            FilePath = filePath;
         }
 
         /// <summary>
@@ -88,8 +79,8 @@ namespace SetIPLib {
         /// <param name="filePath">Full path to file, including file name.</param>
         /// <param name="encoder">Encoder used to write profile information to the specified file.</param>
         public ProfileFileStore(string filePath, IProfileEncoder encoder) {
-            _filePath = filePath;
-            _encoder = encoder;
+            FilePath = filePath;
+            Encoder = encoder;
         }
 
     }
