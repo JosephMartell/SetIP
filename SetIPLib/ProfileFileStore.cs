@@ -16,21 +16,14 @@ namespace SetIPLib {
         public IProfileEncoder Encoder { get; } = new XMLProfileEncoder();
 
         public IEnumerable<Profile> Retrieve() {
+            byte[] contents;
             using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
-                byte[] contents = new byte[fs.Length];
-                try {
-                    if (fs.Length < int.MaxValue) {
-                        fs.Read(contents, 0, (int)fs.Length);
-                    }
-
+                contents = new byte[fs.Length];
+                if (fs.Length < int.MaxValue) {
+                    fs.Read(contents, 0, (int)fs.Length);
                 }
-                finally {
-                    if (fs != null) {
-                        fs.Close();
-                    }
-                }
-                return Encoder.Decode(contents);
             }
+            return Encoder.Decode(contents);
         }
 
         private void CheckDirectory() {
@@ -39,20 +32,13 @@ namespace SetIPLib {
 
         public void Store(IEnumerable<Profile> profiles) {
             using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Create)) {
-                try {
-                    fs.Write(Encoder.Header, 0, Encoder.Header.Length);
+                fs.Write(Encoder.Header, 0, Encoder.Header.Length);
 
-                    foreach (var p in profiles) {
-                        byte[] pBytes = Encoder.Encode(p);
-                        fs.Write(pBytes, 0, pBytes.Length);
-                    }
-                    fs.Write(Encoder.Footer, 0, Encoder.Footer.Length);
+                foreach (var p in profiles) {
+                    byte[] pBytes = Encoder.Encode(p);
+                    fs.Write(pBytes, 0, pBytes.Length);
                 }
-                finally {
-                    if (fs != null) {
-                        fs.Close();
-                    }
-                }
+                fs.Write(Encoder.Footer, 0, Encoder.Footer.Length);
             }
         }
 

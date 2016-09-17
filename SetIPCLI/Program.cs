@@ -10,13 +10,49 @@ namespace SetIPCLI {
 
         private static ProfileFileStore store = new ProfileFileStore();
 
+        private static string[] ArgScrubber(string[] args) {
+            for (int i = 0; i < args.Length; i++) {
+                if (args[i].StartsWith("--")) {
+                    args[i] = args[i].Remove(0, 1);
+                }
+                if (args[i].StartsWith("/")) {
+                    args[i] = "-" + args[i].Remove(0, 1);
+                }
+            }
+
+            return args;
+        }
+
+        private static IEnumerable<ArgumentGroup> ParseArguments(string[] args) {
+            args = ArgScrubber(args);
+
+            List<ArgumentGroup> argGroups = new List<SetIPCLI.ArgumentGroup>();
+            List<string> argGroup = null;
+            foreach (var a in args) {
+                if (a.StartsWith("-")) {
+                    if (argGroup != null) {
+                        argGroups.Add(new ArgumentGroup(argGroup));
+                    }
+                    argGroup = new List<string>();
+                }
+                argGroup.Add(a);
+            }
+            argGroups.Add(new ArgumentGroup(argGroup));
+
+            return argGroups;
+        }
+
         static void Main(string[] args) {
-            //TestStorage();
-            //TestRetrieval();
-            //TestInterfaceList();
-            TestApply();
-            Console.Write("Press any key...");
-            Console.ReadKey();
+            var argGroups = ParseArguments(args);
+            var commands = CLICommandFactory.GetCommands(argGroups);
+            foreach (var c in commands) {
+                try {
+                    c.Execute();
+                }
+                catch (UnknownCommandException e) {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
 
         static void TestStorage() {

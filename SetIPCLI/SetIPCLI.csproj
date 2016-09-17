@@ -43,8 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddProfile.cs" />
+    <Compile Include="ArgumentGroup.cs" />
+    <Compile Include="CLICommandPriority.cs" />
+    <Compile Include="CLICommandFactory.cs" />
+    <Compile Include="CLIUnknown.cs" />
+    <Compile Include="ICLICommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnknownCommandException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SetIPLib {
-    interface IProfileStore {
+    public interface IProfileStore {
         IProfileEncoder Encoder { get; }
         IEnumerable<Profile> Retrieve();
         void Store(IEnumerable<Profile> profiles);
