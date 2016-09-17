@@ -9,7 +9,7 @@ using System.Net;
 namespace SetIPCLI {
 
     /// <summary>
-    /// Expected syntax:
+    /// Expected CLI syntax:
     ///   -a "Profile name" dhcp
     ///   -add "Other name" static 192.168.1.1 255.255.255.0
     /// </summary>
@@ -22,17 +22,18 @@ namespace SetIPCLI {
             None
         }
 
-        public CLICommandPriority Priority { get; } = CLICommandPriority.High;
-
+        /// <summary>
+        /// Arguments that will be parsed to generate a new profile.
+        /// </summary>
         public ArgumentGroup Arguments { get; }
 
         public AddProfile(ArgumentGroup args) {
             Arguments = args;
         }
 
-        public void Execute() {
-            IProfileStore store = new ProfileFileStore();
-            var currentProfiles = store.Retrieve().ToList();
+
+        public void Execute(ref IProfileStore store) {
+            var currentProfiles = store?.Retrieve().ToList();
             ExpectedParameter nextParm = ExpectedParameter.Name;
 
             string name = string.Empty;
@@ -72,13 +73,13 @@ namespace SetIPCLI {
                 }
             }
             if (UseDHCP) {
-                currentProfiles.Add(new Profile(name));
+                currentProfiles?.Add(new Profile(name));
             }
             else {
-                currentProfiles.Add(new Profile(name, ip, sub));
+                currentProfiles?.Add(new Profile(name, ip, sub));
             }
 
-            store.Store(currentProfiles);
+            store?.Store(currentProfiles);
 
         }
     }

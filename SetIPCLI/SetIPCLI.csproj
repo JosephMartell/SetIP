@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="AddProfile.cs" />
     <Compile Include="ArgumentGroup.cs" />
-    <Compile Include="CLICommandPriority.cs" />
     <Compile Include="CLICommandFactory.cs" />
     <Compile Include="CLIUnknown.cs" />
     <Compile Include="ICLICommand.cs" />

@@ -45,9 +45,10 @@ namespace SetIPCLI {
         static void Main(string[] args) {
             var argGroups = ParseArguments(args);
             var commands = CLICommandFactory.GetCommands(argGroups);
+            IProfileStore store = new ProfileFileStore();
             foreach (var c in commands) {
                 try {
-                    c.Execute();
+                    c.Execute(ref store);
                 }
                 catch (UnknownCommandException e) {
                     Console.WriteLine(e.Message);
