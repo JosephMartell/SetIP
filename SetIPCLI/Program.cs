@@ -8,8 +8,6 @@ using System.Diagnostics;
 namespace SetIPCLI {
     class Program {
 
-        private static ProfileFileStore store = new ProfileFileStore();
-
         private static string[] ArgScrubber(string[] args) {
             for (int i = 0; i < args.Length; i++) {
                 if (args[i].StartsWith("--")) {
@@ -56,34 +54,40 @@ namespace SetIPCLI {
             }
         }
 
-        static void TestStorage() {
-            List<Profile> profiles = new List<Profile>();
-            profiles.Add(new Profile("Test 1"));
-            profiles.Add(new Profile("Test 2", IPAddress.Parse("192.168.1.1"), IPAddress.Parse("255.255.255.0")));
-            store.Store(profiles);
-        }
 
-        static void TestRetrieval() {
-            IEnumerable<Profile> readProfiles = store.Retrieve();
-        }
+        //TEST METHODS - not used in normal execution
+        //These should be moved to a test project.
+        
+        //private static ProfileFileStore store = new ProfileFileStore();
 
-        static void TestInterfaceList() {
-            var interfaces = ProfileApplier.ListInterfaces();
-            foreach (var i in interfaces) {
-                Console.WriteLine(i);
-            }
-        }
+        //static void TestStorage() {
+        //    List<Profile> profiles = new List<Profile>();
+        //    profiles.Add(new Profile("Test 1"));
+        //    profiles.Add(new Profile("Test 2", IPAddress.Parse("192.168.1.1"), IPAddress.Parse("255.255.255.0")));
+        //    store.Store(profiles);
+        //}
 
-        static void TestApply() {
-            Profile pStatic = new Profile("Test Static",
-                                    IPAddress.Parse("10.10.10.50"),
-                                    IPAddress.Parse("255.255.0.0"));
-            ProfileApplier.ApplyProfile("Wireless Network Connection", pStatic);
+        //static void TestRetrieval() {
+        //    IEnumerable<Profile> readProfiles = store.Retrieve();
+        //}
 
-            System.Threading.Thread.Sleep(20000);
+        //static void TestInterfaceList() {
+        //    var interfaces = ProfileApplier.ListInterfaces();
+        //    foreach (var i in interfaces) {
+        //        Console.WriteLine(i);
+        //    }
+        //}
 
-            Profile pDynamic = new Profile("Test Dynamic");
-            ProfileApplier.ApplyProfile("Wireless Network Connection", pDynamic);
-        }
+        //static void TestApply() {
+        //    Profile pStatic = new Profile("Test Static",
+        //                            IPAddress.Parse("10.10.10.50"),
+        //                            IPAddress.Parse("255.255.0.0"));
+        //    ProfileApplier.ApplyProfile("Wireless Network Connection", pStatic);
+
+        //    System.Threading.Thread.Sleep(20000);
+
+        //    Profile pDynamic = new Profile("Test Dynamic");
+        //    ProfileApplier.ApplyProfile("Wireless Network Connection", pDynamic);
+        //}
     }
 }
