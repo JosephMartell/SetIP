@@ -37,7 +37,11 @@ namespace SetIPCLI {
             switch (arg.Command.ToUpper()) {
                 case "-A":
                 case "-ADD":
-                    returnCommand = new AddProfile(arg);
+                    returnCommand = new CLIAddProfile(arg);
+                    break;
+                case "-U":
+                case "-USE":
+                    returnCommand = new CLIUseProfile(arg);
                     break;
                 default:
                     returnCommand = new CLIUnknown(arg);

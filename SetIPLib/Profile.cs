@@ -3,6 +3,7 @@
 namespace SetIPLib {
 
     public class Profile {
+        public static Profile DHCPDefault = new Profile("DHCP");
         public string Name { get; } = string.Empty;
 
         public bool UseDHCP { get; } = true;
