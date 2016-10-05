@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SetIPLib;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SetIPLib;
 
 namespace SetIPCLI {
     class CLIUseProfile : ICLICommand {
@@ -16,7 +12,7 @@ namespace SetIPCLI {
 
             //If the supplied profile name is not found, DHCP is used instead.
             Profile target = (from p in profiles
-                             where p.Name == profileName
+                             where p.Name.ToUpper() == profileName.ToUpper()
                              select p).DefaultIfEmpty(Profile.DHCPDefault).First();
 
             //Eventually, the adapter name will be one of the arguments that can be passed.
