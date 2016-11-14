@@ -47,6 +47,7 @@
     <Compile Include="ArgumentGroup.cs" />
     <Compile Include="CLICommandFactory.cs" />
     <Compile Include="CLIListProfiles.cs" />
+    <Compile Include="CLIRenameProfile.cs" />
     <Compile Include="CLIUnknown.cs" />
     <Compile Include="CLIUseProfile.cs" />
     <Compile Include="ICLICommand.cs" />
