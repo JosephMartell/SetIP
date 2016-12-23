@@ -26,7 +26,7 @@ namespace SetIPCLI {
                     Console.WriteLine("{0,-35} DHCP", profile.Name);
                 }
                 else {
-                    Console.WriteLine("{0,-35} {1,-18} {2,-18}", profile.Name, profile.IP.ToString(), profile.Subnet.ToString());
+                    Console.WriteLine("{0,-30} {1,-15} {2,-15} {3,-15}", profile.Name, profile.IP.ToString(), profile.Subnet.ToString(), profile.Gateway.ToString());
                 }
             }
         }

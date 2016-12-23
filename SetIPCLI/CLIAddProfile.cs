@@ -19,6 +19,7 @@ namespace SetIPCLI {
             Source,
             IP,
             Sub,
+            Gateway,
             None
         }
 
@@ -40,6 +41,7 @@ namespace SetIPCLI {
             bool UseDHCP = true;
             IPAddress ip = IPAddress.Any;
             IPAddress sub = IPAddress.Any;
+            IPAddress gateway = IPAddress.None;
 
             foreach (var parm in Arguments.Arguments) {
                 switch (nextParm) {
@@ -64,6 +66,10 @@ namespace SetIPCLI {
                         break;
                     case ExpectedParameter.Sub:
                         sub = IPAddress.Parse(parm);
+                        nextParm = ExpectedParameter.Gateway;
+                        break;
+                    case ExpectedParameter.Gateway:
+                        gateway = IPAddress.Parse(parm);
                         nextParm = ExpectedParameter.None;
                         break;
                     case ExpectedParameter.None:
@@ -77,7 +83,12 @@ namespace SetIPCLI {
                 currentProfiles?.Add(new Profile(name));
             }
             else {
-                currentProfiles?.Add(new Profile(name, ip, sub));
+                if (gateway == IPAddress.None) {
+                    currentProfiles?.Add(new Profile(name, ip, sub));
+                }
+                else {
+                    currentProfiles?.Add(new Profile(name, ip, sub, gateway));
+                }
             }
 
             store?.Store(currentProfiles);

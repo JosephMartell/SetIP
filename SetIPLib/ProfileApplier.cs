@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using System.Net;
 
 
 namespace SetIPLib {
@@ -29,7 +30,12 @@ namespace SetIPLib {
                 startInfo.Arguments = string.Format("interface ip set address \"{0}\" dhcp", interfaceName);
             }
             else {
-                startInfo.Arguments = string.Format("interface ip set address \"{0}\" static {1} {2}", interfaceName, profile.IP.ToString(), profile.Subnet.ToString());
+                if (profile.Gateway == IPAddress.Any) {
+                    startInfo.Arguments = string.Format("interface ip set address \"{0}\" static {1} {2}", interfaceName, profile.IP.ToString(), profile.Subnet.ToString());
+                }
+                else {
+                    startInfo.Arguments = string.Format("interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()} {profile.Gateway.ToString()}"); 
+                }
             }
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;

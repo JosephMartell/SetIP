@@ -12,6 +12,8 @@ namespace SetIPLib {
 
         public IPAddress Subnet { get; } = IPAddress.None;
 
+        public IPAddress Gateway { get; } = IPAddress.None;
+
         public Profile(string name) {
             Name = name;
         }
@@ -21,6 +23,14 @@ namespace SetIPLib {
             IP = ip;
             Subnet = subnet;
             UseDHCP = false;
+        }
+
+        public Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway) {
+            Name = name;
+            IP = ip;
+            Subnet = subnet;
+            UseDHCP = false;
+            Gateway = gateway;
         }
     }
 }
