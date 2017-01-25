@@ -27,20 +27,18 @@ namespace SetIPLib {
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "netsh";
             if (profile.UseDHCP) {
-                startInfo.Arguments = string.Format("interface ip set address \"{0}\" dhcp", interfaceName);
+                startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" dhcp");
             }
             else {
-                if (profile.Gateway == IPAddress.Any) {
-                    startInfo.Arguments = string.Format("interface ip set address \"{0}\" static {1} {2}", interfaceName, profile.IP.ToString(), profile.Subnet.ToString());
+                if (profile.Gateway == IPAddress.None) {
+                    startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()}");
                 }
                 else {
-                    startInfo.Arguments = string.Format("interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()} {profile.Gateway.ToString()}"); 
+                    startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()} {profile.Gateway.ToString()}"); 
                 }
             }
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
-
-
             System.IO.StreamReader output;
             using (Process netsh = new Process()) {
                 netsh.StartInfo = startInfo;
@@ -48,8 +46,28 @@ namespace SetIPLib {
                 output = netsh.StandardOutput;
                 netsh.WaitForExit();
             }
+
+            if (profile.DNSServers.Count > 0) {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"interface ip set dnsservers \"{interfaceName}\" static");
+                foreach (IPAddress ip in profile.DNSServers) {
+                    sb.Append($" {ip.ToString()}");
+                }
+                startInfo.Arguments = sb.ToString();
+            }
+            else {
+                startInfo.Arguments = string.Format($"interface ip set dnsservers \"{interfaceName}\" dhcp");
+            }
+
+            using (Process netsh = new Process()) {
+                netsh.StartInfo = startInfo;
+                netsh.Start();
+                output = netsh.StandardOutput;
+                netsh.WaitForExit();
+            }
+
         }
-        
+
 
         /// <summary>
         /// Returns a list of interface names that a profile can be applied to. They are

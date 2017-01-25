@@ -43,10 +43,6 @@ namespace SetIPCLI {
                 case "-LIST":
                     returnCommand = new CLIListProfiles(arg);
                     break;
-                case "-R":
-                case "-RENAME":
-                    returnCommand = new CLIRenameProfile(arg);
-                    break;
                 default:
                     returnCommand = new CLIUnknown(arg);
                     break;

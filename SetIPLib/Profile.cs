@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Collections.Generic;
 
 namespace SetIPLib {
 
@@ -13,6 +14,8 @@ namespace SetIPLib {
         public IPAddress Subnet { get; } = IPAddress.None;
 
         public IPAddress Gateway { get; } = IPAddress.None;
+
+        public List<IPAddress> DNSServers { get; } = new List<IPAddress>();
 
         public Profile(string name) {
             Name = name;
@@ -31,6 +34,15 @@ namespace SetIPLib {
             Subnet = subnet;
             UseDHCP = false;
             Gateway = gateway;
+        }
+
+        public Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway, List<IPAddress> dnsServers) {
+            Name = name;
+            IP = ip;
+            Subnet = subnet;
+            UseDHCP = false;
+            Gateway = gateway;
+            DNSServers = dnsServers;
         }
     }
 }

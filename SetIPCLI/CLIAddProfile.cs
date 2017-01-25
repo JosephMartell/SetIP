@@ -20,6 +20,7 @@ namespace SetIPCLI {
             IP,
             Sub,
             Gateway,
+            DNS,
             None
         }
 
@@ -42,7 +43,7 @@ namespace SetIPCLI {
             IPAddress ip = IPAddress.Any;
             IPAddress sub = IPAddress.Any;
             IPAddress gateway = IPAddress.None;
-
+            List<IPAddress> DNSServers = new List<IPAddress>();
             foreach (var parm in Arguments.Arguments) {
                 switch (nextParm) {
                     case ExpectedParameter.Name:
@@ -70,7 +71,11 @@ namespace SetIPCLI {
                         break;
                     case ExpectedParameter.Gateway:
                         gateway = IPAddress.Parse(parm);
-                        nextParm = ExpectedParameter.None;
+                        nextParm = ExpectedParameter.DNS;
+                        break;
+                    case ExpectedParameter.DNS:
+                        DNSServers.Add(IPAddress.Parse(parm));
+                        nextParm = ExpectedParameter.DNS;
                         break;
                     case ExpectedParameter.None:
                         break;
@@ -87,7 +92,12 @@ namespace SetIPCLI {
                     currentProfiles?.Add(new Profile(name, ip, sub));
                 }
                 else {
-                    currentProfiles?.Add(new Profile(name, ip, sub, gateway));
+                    if (DNSServers.Count > 0) {
+                        currentProfiles?.Add(new Profile(name, ip, sub, gateway, DNSServers));
+                    }
+                    else {
+                        currentProfiles?.Add(new Profile(name, ip, sub, gateway));
+                    }
                 }
             }
 
