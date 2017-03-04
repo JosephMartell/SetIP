@@ -50,6 +50,7 @@
     <Compile Include="CLIUnknown.cs" />
     <Compile Include="CLIUseProfile.cs" />
     <Compile Include="ICLICommand.cs" />
+    <Compile Include="CLIEditProfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownCommandException.cs" />

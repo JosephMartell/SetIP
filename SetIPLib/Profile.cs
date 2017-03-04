@@ -44,5 +44,30 @@ namespace SetIPLib {
             Gateway = gateway;
             DNSServers = dnsServers;
         }
+
+        public ProfileGen Morph() {
+            return new ProfileGen(this);
+        }
+
+        public class ProfileGen {
+            protected Profile _oldProfile;
+
+            public ProfileGen(Profile p) {
+
+            }
+
+            public ProfileGen Name(string newName) {
+                if (_oldProfile.UseDHCP) {
+                    return new ProfileGen(new Profile(newName));
+                }
+                else {
+                    return new ProfileGen(new Profile(newName, _oldProfile.IP, _oldProfile.Subnet, _oldProfile.Gateway, _oldProfile.DNSServers));
+                }
+            }
+
+            public ProfileGen IP(IPAddress newIP) {
+                return new ProfileGen(new Profile(_oldProfile.Name, newIP, _oldProfile.Subnet, _oldProfile.Gateway, _oldProfile.DNSServers));
+            }
+        }
     }
 }

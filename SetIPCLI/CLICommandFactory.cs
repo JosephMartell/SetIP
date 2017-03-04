@@ -43,6 +43,10 @@ namespace SetIPCLI {
                 case "-LIST":
                     returnCommand = new CLIListProfiles(arg);
                     break;
+                case "-E":
+                case "-EDIT":
+                    returnCommand = new CLIEditProfile(arg);
+                    break;
                 default:
                     returnCommand = new CLIUnknown(arg);
                     break;
