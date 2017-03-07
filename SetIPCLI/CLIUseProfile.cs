@@ -22,5 +22,10 @@ namespace SetIPCLI {
         public CLIUseProfile(ArgumentGroup args) {
             Arguments = args;
         }
+
+        public string Help() {
+            return "Usage: setipcli -u \"Profile Name\"\n" +
+                   "  - profile names without a space do not need to be surrounded by quoatation marks";
+        }
     }
 }

@@ -102,7 +102,14 @@ namespace SetIPCLI {
             }
 
             store?.Store(currentProfiles);
+        }
 
+        public string Help() {
+            return "Usage: setipcli -a \"Profile Name\" ip-address subnet-mask [default-gateway] [[dns-1] [dns-2]...]\n" +
+                   "  - All IP addresses are decimal-dot notation (111.111.111.111)\n" +
+                   "  - Only IPv4 addresses are supported\n" +
+                   "  - Items listed in brackets [] are optional\n" +
+                   "  - multiple DNS servers can be specified";
         }
     }
 }

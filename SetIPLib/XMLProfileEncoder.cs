@@ -102,7 +102,7 @@ namespace SetIPLib {
                     List<IPAddress> DNSServers = new List<IPAddress>();
                     el = xmlProfile.Element("DNSServers");
                     if (el != null) {
-                        foreach (var server in xmlProfile.Element("DNSServers").Elements("servers")) {
+                        foreach (var server in xmlProfile.Element("DNSServers").Elements("server")) {
                             DNSServers.Add(IPAddress.Parse(server.Value));
                         }
                     }

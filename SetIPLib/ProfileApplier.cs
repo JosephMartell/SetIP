@@ -48,12 +48,9 @@ namespace SetIPLib {
             }
 
             if (profile.DNSServers.Count > 0) {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"interface ip set dnsservers \"{interfaceName}\" static");
-                foreach (IPAddress ip in profile.DNSServers) {
-                    sb.Append($" {ip.ToString()}");
-                }
-                startInfo.Arguments = sb.ToString();
+                //right now, only a single DNS server is supported.  In order to have multiple another netsh command would have to be used:
+                //netsh interface ip add dns \"{interfaceName}\" {DNS Address}
+                startInfo.Arguments = $"interface ip set dnsservers \"{interfaceName}\" static {profile.DNSServers[0].ToString()}";
             }
             else {
                 startInfo.Arguments = string.Format($"interface ip set dnsservers \"{interfaceName}\" dhcp");
@@ -65,7 +62,6 @@ namespace SetIPLib {
                 output = netsh.StandardOutput;
                 netsh.WaitForExit();
             }
-
         }
 
 

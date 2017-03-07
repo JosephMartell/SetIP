@@ -24,6 +24,10 @@ namespace SetIPCLI {
         public void Execute(ref IProfileStore store) {
             throw new UnknownCommandException(Arguments.Command);
         }
+
+        public string Help() {
+            return "Unknown command.";
+        }
     }
 
 

@@ -30,5 +30,10 @@ namespace SetIPCLI {
                 }
             }
         }
+
+        public string Help() {
+            return $"Usage: setipcli -l\n" +
+                    " Returns a listing of all saved profiles";
+        }
     }
 }

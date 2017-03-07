@@ -140,5 +140,22 @@ namespace SetIPCLI {
                 return text;
             }
         }
+
+        public string Help() {
+            //               1         2         3         4         5         6         7        8
+            //      123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+            return "Usage: setipcli -e [originalname=]\"Original Profile Name\" name=new-value\n" +
+                   "  - If the name originalname is not explicitly used then the first parameter\n" +
+                   "    MUST be the original profile name\n" +
+                   "  - The following property names are recognized:\n" +
+                   "         + originalname - Identifies the original profile to be modified\n" +
+                   "         + name - specifies a new name for the profile\n" +
+                   "         + source - valid values are \"DHCP\" or \"static\"\n" +
+                   "         + ip - specifies a new IP address in decimal-dot notation\n" +
+                   "         + sub/subnet - Specifies a new subnet mask in decimal-dot notation\n" +
+                   "         + gateway/gw - Specifies a new default gateway\n" +
+                   "         + dns - Can be listed multiple times to specify a new list of DNS\n" +
+                   "                 All previous DNS listings are removed";
+        }
     }
 }
