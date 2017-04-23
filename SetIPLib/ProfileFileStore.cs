@@ -17,13 +17,20 @@ namespace SetIPLib {
 
         public IEnumerable<Profile> Retrieve() {
             byte[] contents;
-            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
+            ValidateFile();
+            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.OpenOrCreate)) {
                 contents = new byte[fs.Length];
                 if (fs.Length < int.MaxValue) {
                     fs.Read(contents, 0, (int)fs.Length);
                 }
             }
             return Encoder.Decode(contents);
+        }
+
+        protected void ValidateFile() {
+            if (!System.IO.Directory.Exists(FilePath)) {
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(FilePath));
+            }
         }
 
         private void CheckDirectory() {
