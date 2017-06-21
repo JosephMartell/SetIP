@@ -30,7 +30,7 @@ namespace SetIPCLI {
                 profiles = store.Retrieve();
             }
 
-            foreach (var profile in profiles) {
+            foreach (var profile in profiles.OrderBy(p => p.Name)) {
                 if (profile.UseDHCP) {
                     Console.WriteLine("{0,-35} DHCP", profile.Name);
                 }
