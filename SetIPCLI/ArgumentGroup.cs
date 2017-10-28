@@ -25,8 +25,14 @@ namespace SetIPCLI {
         /// </summary>
         /// <param name="commandWithArguments">A single list containing the command flag as the first element ('-a' or '-e', etc) and all other necessary arguments for that command.</param>
         public ArgumentGroup(IEnumerable<string> commandWithArguments) {
-            Command = commandWithArguments.First();
-            Arguments = commandWithArguments.Skip(1);
+            Command = commandWithArguments.FirstOrDefault();
+            Arguments = commandWithArguments?.Skip(1);
+        }
+
+        public static ArgumentGroup EmptyGroup {
+            get {
+                return new ArgumentGroup(new string[0]);
+            }
         }
     }
 }

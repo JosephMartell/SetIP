@@ -47,6 +47,10 @@ namespace SetIPCLI {
                 case "-EDIT":
                     returnCommand = new CLIEditProfile(arg);
                     break;
+                case "-?":
+                case "-HELP":
+                    returnCommand = new CLIListCommands(arg);
+                    break;
                 default:
                     returnCommand = new CLIUnknown(arg);
                     break;

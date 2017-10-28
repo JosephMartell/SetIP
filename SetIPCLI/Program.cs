@@ -6,6 +6,11 @@ using System.Net.NetworkInformation;
 using System.Diagnostics;
 
 namespace SetIPCLI {
+
+    public enum Flags {
+        CommandList = 1
+    }
+
     class Program {
 
         private static string[] ArgScrubber(string[] args) {
@@ -23,7 +28,6 @@ namespace SetIPCLI {
 
         private static IEnumerable<ArgumentGroup> ParseArguments(string[] args) {
             args = ArgScrubber(args);
-
             List<ArgumentGroup> argGroups = new List<SetIPCLI.ArgumentGroup>();
             List<string> argGroup = null;
             foreach (var a in args) {
@@ -42,6 +46,10 @@ namespace SetIPCLI {
 
         static void Main(string[] args) {
             var argGroups = ParseArguments(args);
+            Flags flags;
+
+            flags = ParseFlags(argGroups);
+
             var commands = CLICommandFactory.GetCommands(argGroups);
             IProfileStore store = new ProfileFileStore();
             foreach (var c in commands) {
@@ -54,6 +62,10 @@ namespace SetIPCLI {
             }
         }
 
+
+        static Flags ParseFlags(IEnumerable<ArgumentGroup> argGroups) {
+            return Flags.CommandList;
+        }
 
         //TEST METHODS - not used in normal execution
         //These should be moved to a test project.

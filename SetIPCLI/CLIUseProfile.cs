@@ -1,5 +1,6 @@
 ﻿using SetIPLib;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SetIPCLI {
     class CLIUseProfile : ICLICommand {
@@ -24,8 +25,23 @@ namespace SetIPCLI {
         }
 
         public string Help() {
-            return "Usage: setipcli -u \"Profile Name\"\n" +
-                   "  - profile names without a space do not need to be surrounded by quoatation marks";
+            return string.Format(
+                "{0, -15}",
+                "Use Profile",
+                "Usage: setipcli -u \"Profile Name\"\n" +
+                "  - profile names without a space do not need to be surrounded by quoatation marks"
+                );
         }
+
+        public IEnumerable<string> CommandSummary() {
+            return new string[] 
+            {
+                string.Format(
+                    "{0, -15} {1, -63}",
+                    "Use Profile",
+                    "-u \"Profile Name\"")
+            };
+        }
+
     }
 }

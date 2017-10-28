@@ -44,5 +44,29 @@ namespace SetIPCLI {
             return $"Usage: setipcli -l\n" +
                     " Returns a listing of all saved profiles";
         }
+
+        private delegate void cmdSumFormat(string s1, string s2);
+        public IEnumerable<string> CommandSummary() {
+
+            string format = "{0, -15} {1, -63}";
+            List<string> summary = new List<string>();
+            cmdSumFormat addLine = (s1, s2) => summary.Add(string.Format(format, s1, s2));
+
+            addLine(
+                    "List Profiles",
+                    "-l [filter]");
+            addLine(
+                "",
+                "filter is any sequence of characters that will be");
+            addLine(
+                "",
+                "matched against profile names.  Wildcard chcaracters");
+            addLine(
+                "",
+                "are not supported at this time.");
+
+            return summary;
+        }
+
     }
 }
