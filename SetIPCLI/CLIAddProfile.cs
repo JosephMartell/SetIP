@@ -147,5 +147,21 @@ namespace SetIPCLI {
                    "  - Items listed in brackets [] are optional\n" +
                    "  - multiple DNS servers can be specified";
         }
+
+        private delegate void cmdSumFormat(string s1, string s2);
+        public IEnumerable<string> CommandSummary() {
+            string format = "{0, -15} {1, -63}";
+            List<string> summary = new List<string>();
+            cmdSumFormat addLine = (s1, s2) => summary.Add(string.Format(format, s1, s2));
+
+            addLine(
+                "Add Profile",
+                "-a \"Profile Name\" dhcp");
+            addLine(
+                " ",
+                "-a \"Profile Name\" static ip-address subnet [gateway] [dns]");
+
+            return summary;
+        }
     }
 }

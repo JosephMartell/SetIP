@@ -24,7 +24,8 @@ namespace SetIPCLI {
             Arguments = args;
         }
 
-        public void Execute(ref IProfileStore store) {
+        public void Execute(ref IProfileStore store)
+        {
             var currentProfiles = store?.Retrieve().ToList();
 
             var nextParm = ExpectedParameter.OriginalName;
@@ -104,7 +105,8 @@ namespace SetIPCLI {
             store.Store(currentProfiles);
         }
 
-        private ExpectedParameter ParseArgument(string text) {
+        private ExpectedParameter ParseArgument(string text)
+        {
             var s = text.Split('=');
             if (s.Length > 1) {
                 string type = s[0].ToLower().Trim();
@@ -157,5 +159,36 @@ namespace SetIPCLI {
                    "         + dns - Can be listed multiple times to specify a new list of DNS\n" +
                    "                 All previous DNS listings are removed";
         }
+
+        private delegate void cmdSumFormat(string s1, string s2);
+        public IEnumerable<string> CommandSummary()
+        {
+            string format = "{0, -15} {1, -63}";
+            List<string> summary = new List<string>();
+            cmdSumFormat addLine = (s1, s2) => summary.Add(string.Format(format, s1, s2));
+
+            addLine(
+                "edit profile",
+                "-e \"profile name\" [[name=]\"new name\"] [[ip=]ip] [[subnet]=sub]");
+
+            addLine(
+                "edit profile",
+                "-e \"profile name\" [[name=]\"new name\"] [[ip=]ip] [[subnet]=sub]");
+
+            addLine(
+                "",
+                "                   [[gw=]gw] [[dns=]dns]");
+
+            addLine(
+                "",
+                "if item names are omitted then arguments must be in");
+
+            addLine(
+                "",
+                "the order shown");
+
+            return summary;
+        }
+
     }
 }
