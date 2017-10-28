@@ -21,7 +21,16 @@ namespace SetIPCLI {
         }
 
         public void Execute(ref IProfileStore store) {
-            foreach (var profile in store.Retrieve()) {
+            IEnumerable<Profile> profiles;
+            if (Arguments.Arguments.Count() > 0) {
+                string filter = Arguments.Arguments.First();
+                profiles = store.Retrieve().Where((p, b) => p.Name.ToUpper().Contains(filter.ToUpper()));
+            }
+            else {
+                profiles = store.Retrieve();
+            }
+
+            foreach (var profile in profiles.OrderBy(p => p.Name)) {
                 if (profile.UseDHCP) {
                     Console.WriteLine("{0,-35} DHCP", profile.Name);
                 }
