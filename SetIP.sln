@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetIPLib", "SetIPLib\SetIPLib.csproj", "{A6BF69E3-44B4-4225-AFC7-FF38B1CCC3FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetIPCLI", "SetIPCLI\SetIPCLI.csproj", "{89FDA25F-6CFD-4F9E-9A66-96939A141F4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetIPLibTest", "SetIPLibTest\SetIPLibTest.csproj", "{B66363C1-121C-42C8-B8B8-DC1E2D29FEAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{89FDA25F-6CFD-4F9E-9A66-96939A141F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89FDA25F-6CFD-4F9E-9A66-96939A141F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89FDA25F-6CFD-4F9E-9A66-96939A141F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B66363C1-121C-42C8-B8B8-DC1E2D29FEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B66363C1-121C-42C8-B8B8-DC1E2D29FEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B66363C1-121C-42C8-B8B8-DC1E2D29FEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B66363C1-121C-42C8-B8B8-DC1E2D29FEAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B50EE0E-4E37-4317-9D59-C7868410B33F}
 	EndGlobalSection
 EndGlobal

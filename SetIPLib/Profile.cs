@@ -1,9 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Collections.Generic;
 
 namespace SetIPLib {
 
-    public class Profile {
+    public class Profile :
+        IComparable<Profile>,
+        IEquatable<Profile> {
         public static Profile DHCPDefault = new Profile("DHCP");
         public string Name { get; } = string.Empty;
 
@@ -17,6 +20,7 @@ namespace SetIPLib {
 
         public List<IPAddress> DNSServers { get; } = new List<IPAddress>();
 
+        //TODO: refactor this to use well-named factory methods
         public Profile(string name) {
             Name = name;
         }
@@ -47,6 +51,50 @@ namespace SetIPLib {
 
         public ProfileGen Morph() {
             return new ProfileGen(this);
+        }
+
+        public int CompareTo(Profile other)
+        {
+            return Name.CompareTo(other.Name);
+        }
+
+        public bool Equals(Profile other)
+        {
+            bool AreEqual = (Name == other.Name);
+            AreEqual &= (UseDHCP == other.UseDHCP);
+            AreEqual &= IP.Equals(other.IP);
+            AreEqual &= Subnet.Equals(other.Subnet);
+            AreEqual &= Gateway.Equals(other.Gateway);
+            AreEqual &= DNSServersAreEqual(other.DNSServers);
+            return AreEqual;
+        }
+
+        private bool DNSServersAreEqual(List<IPAddress> DNSServers)
+        {
+            if (this.DNSServers.Count != DNSServers.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this.DNSServers.Count; i++)
+            {
+                if (!this.DNSServers[i].Equals(DNSServers[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Profile otherP = (Profile)obj;
+            return Equals(otherP);
         }
 
         public class ProfileGen {

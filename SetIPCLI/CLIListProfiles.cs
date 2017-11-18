@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SetIPLib;
 
-namespace SetIPCLI {
+namespace SetIPCLI
+{
     /// <summary>
     /// Returns a list of all profiles currently stored.
     /// Expected CLI syntax:
@@ -15,23 +16,29 @@ namespace SetIPCLI {
     class CLIListProfiles : ICLICommand {
         public ArgumentGroup Arguments { get; }
 
-        public CLIListProfiles(ArgumentGroup args) {
+        public CLIListProfiles(ArgumentGroup args)
+        {
             Arguments = args;
 
         }
 
-        public void Execute(ref IProfileStore store) {
-            foreach (var profile in store.Retrieve()) {
-                if (profile.UseDHCP) {
+        public void Execute(ref IProfileStore store)
+        {
+            foreach (var profile in store.Retrieve())
+            {
+                if (profile.UseDHCP)
+                {
                     Console.WriteLine("{0,-35} DHCP", profile.Name);
                 }
-                else {
+                else
+                {
                     Console.WriteLine("{0,-30} {1,-15} {2,-15} {3,-15}", profile.Name, profile.IP.ToString(), profile.Subnet.ToString(), profile.Gateway.ToString());
                 }
             }
         }
 
-        public string Help() {
+        public string Help()
+        {
             return $"Usage: setipcli -l\n" +
                     " Returns a listing of all saved profiles";
         }

@@ -11,13 +11,13 @@ namespace SetIPLib {
     /// 
     public class ProfileFileStore : IProfileStore {
 
-        public string FilePath { get; } = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
+        public string FilePath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
 
         public IProfileEncoder Encoder { get; } = new XMLProfileEncoder();
 
         public IEnumerable<Profile> Retrieve() {
             byte[] contents;
-            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
+            using (FileStream fs = new FileStream(FilePath, System.IO.FileMode.Open)) {
                 contents = new byte[fs.Length];
                 if (fs.Length < int.MaxValue) {
                     fs.Read(contents, 0, (int)fs.Length);
@@ -31,7 +31,7 @@ namespace SetIPLib {
         }
 
         public void Store(IEnumerable<Profile> profiles) {
-            using (System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Create)) {
+            using (FileStream fs = new FileStream(FilePath, System.IO.FileMode.Create)) {
                 fs.Write(Encoder.Header, 0, Encoder.Header.Length);
 
                 foreach (var p in profiles) {
