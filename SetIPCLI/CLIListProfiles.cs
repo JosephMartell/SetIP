@@ -22,12 +22,18 @@ namespace SetIPCLI
 
         }
 
-        public void Execute(ref IProfileStore store)
-        {
-            foreach (var profile in store.Retrieve())
-            {
-                if (profile.UseDHCP)
-                {
+        public void Execute(ref IProfileStore store) {
+            IEnumerable<Profile> profiles;
+            if (Arguments.Arguments.Count() > 0) {
+                string filter = Arguments.Arguments.First();
+                profiles = store.Retrieve().Where((p, b) => p.Name.ToUpper().Contains(filter.ToUpper()));
+            }
+            else {
+                profiles = store.Retrieve();
+            }
+
+            foreach (var profile in profiles.OrderBy(p => p.Name)) {
+                if (profile.UseDHCP) {
                     Console.WriteLine("{0,-35} DHCP", profile.Name);
                 }
                 else
@@ -42,5 +48,29 @@ namespace SetIPCLI
             return $"Usage: setipcli -l\n" +
                     " Returns a listing of all saved profiles";
         }
+
+        private delegate void cmdSumFormat(string s1, string s2);
+        public IEnumerable<string> CommandSummary() {
+
+            string format = "{0, -15} {1, -63}";
+            List<string> summary = new List<string>();
+            cmdSumFormat addLine = (s1, s2) => summary.Add(string.Format(format, s1, s2));
+
+            addLine(
+                    "List Profiles",
+                    "-l [filter]");
+            addLine(
+                "",
+                "filter is any sequence of characters that will be");
+            addLine(
+                "",
+                "matched against profile names.  Wildcard chcaracters");
+            addLine(
+                "",
+                "are not supported at this time.");
+
+            return summary;
+        }
+
     }
 }

@@ -45,6 +45,11 @@ namespace SetIPCLI {
             IPAddress gateway = IPAddress.None;
             List<IPAddress> DNSServers = new List<IPAddress>();
             foreach (var parm in Arguments.Arguments) {
+                if (parm.Contains("=")) {
+                    nextParm = NextParameter(parm);
+                }
+
+
                 switch (nextParm) {
                     case ExpectedParameter.Name:
                         name = parm;
@@ -84,6 +89,8 @@ namespace SetIPCLI {
                     break;
                 }
             }
+
+
             if (UseDHCP) {
                 currentProfiles?.Add(new Profile(name));
             }
@@ -104,12 +111,57 @@ namespace SetIPCLI {
             store?.Store(currentProfiles);
         }
 
+        //CLI arguments can be given in two ways: with or without identifiers.  If identifiers are used then they will
+        //be in the format if id=value (e.g.: ip=100.100.100.100).  Otherwise, they should be in a prescribed order:
+        //ip, subnet, gateway, dns1, dns2
+        private ExpectedParameter NextParameter(string argument) {
+            var s = argument.Split('=');
+            if (s.Length > 1) {
+                string type = s[0].ToLower().Trim();
+                switch (type) {
+                    case "name":
+                        return ExpectedParameter.Name;
+                    case "source":
+                        return ExpectedParameter.Source;
+                    case "ip":
+                        return ExpectedParameter.IP;
+                    case "sub":
+                    case "subnet":
+                        return ExpectedParameter.Sub;
+                    case "gw":
+                    case "gateway":
+                        return ExpectedParameter.Gateway;
+                    case "dns":
+                        return ExpectedParameter.DNS;
+                    default:
+                        return ExpectedParameter.None;
+                }
+            }
+            return ExpectedParameter.None;
+        }
+
         public string Help() {
             return "Usage: setipcli -a \"Profile Name\" ip-address subnet-mask [default-gateway] [[dns-1] [dns-2]...]\n" +
                    "  - All IP addresses are decimal-dot notation (111.111.111.111)\n" +
                    "  - Only IPv4 addresses are supported\n" +
                    "  - Items listed in brackets [] are optional\n" +
                    "  - multiple DNS servers can be specified";
+        }
+
+        private delegate void cmdSumFormat(string s1, string s2);
+        public IEnumerable<string> CommandSummary() {
+            string format = "{0, -15} {1, -63}";
+            List<string> summary = new List<string>();
+            cmdSumFormat addLine = (s1, s2) => summary.Add(string.Format(format, s1, s2));
+
+            addLine(
+                "Add Profile",
+                "-a \"Profile Name\" dhcp");
+            addLine(
+                " ",
+                "-a \"Profile Name\" static ip-address subnet [gateway] [dns]");
+
+            return summary;
         }
     }
 }

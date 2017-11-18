@@ -28,6 +28,10 @@ namespace SetIPCLI {
         public string Help() {
             return "Unknown command.";
         }
+
+        public IEnumerable<string> CommandSummary() {
+            throw new NotImplementedException("This method on this object should never be called");
+        }
     }
 
 
