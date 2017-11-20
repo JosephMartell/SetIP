@@ -1,6 +1,7 @@
 ﻿using SetIPLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Diagnostics;
@@ -12,6 +13,8 @@ namespace SetIPCLI {
     }
 
     class Program {
+        private static string FilePath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
+
 
         private static string[] ArgScrubber(string[] args) {
             for (int i = 0; i < args.Length; i++) {
@@ -51,7 +54,9 @@ namespace SetIPCLI {
             flags = ParseFlags(argGroups);
 
             var commands = CLICommandFactory.GetCommands(argGroups);
-            IProfileStore store = new ProfileFileStore();
+            IProfileStore store = new StreamProfileStore(
+                new FileStream(FilePath, FileMode.OpenOrCreate), 
+                new XMLProfileEncoder());
             foreach (var c in commands) {
                 try {
                     c.Execute(ref store);

@@ -4,7 +4,8 @@ namespace SetIPLib {
 
     /// <summary>
     /// Used to encode a Profile to a byte array or decode a byte array to 
-    /// a list of profiles.  This is provided so that the profiles can be stored and retrieved from disk.
+    /// a list of profiles.  This is provides translation between profiles
+    /// and the persistence layer.
     /// </summary>
     public interface IProfileEncoder {
         byte[] Header { get; }

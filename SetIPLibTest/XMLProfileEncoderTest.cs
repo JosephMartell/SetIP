@@ -40,7 +40,6 @@ namespace SetIPLibTest
                     .ToArray()).First();
 
             Assert.AreEqual(originalProfile, decodedProfile);
-
         }
     }
 }
