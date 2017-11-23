@@ -67,7 +67,7 @@ namespace SetIPLib
         private Profile ParseDHCPProfileXML(XElement xmlProfile)
         {
             string name = xmlProfile.Attribute("name").Value;
-            return new Profile(name);
+            return Profile.CreateDHCPProfile(name);
         }
 
         private Profile ParseStaticAddressProfileXML(XElement xmlProfile)
@@ -92,15 +92,15 @@ namespace SetIPLib
             }
             if (gw == IPAddress.None)
             {
-                return new Profile(name, ip, subnet);
+                return Profile.CreateStaticProfile(name, ip, subnet);
             }
             else if (DNSServers.Count == 0)
             {
-                return new Profile(name, ip, subnet, gw);
+                return Profile.CreateStaticProfile(name, ip, subnet, gw);
             }
             else
             {
-                return new Profile(name, ip, subnet, gw, DNSServers);
+                return Profile.CreateStaticProfile(name, ip, subnet, gw, DNSServers);
             }
         }
 

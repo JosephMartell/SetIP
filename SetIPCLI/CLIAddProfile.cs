@@ -92,18 +92,18 @@ namespace SetIPCLI {
 
 
             if (UseDHCP) {
-                currentProfiles?.Add(new Profile(name));
+                currentProfiles?.Add(Profile.CreateDHCPProfile(name));
             }
             else {
                 if (gateway == IPAddress.None) {
-                    currentProfiles?.Add(new Profile(name, ip, sub));
+                    currentProfiles?.Add(Profile.CreateStaticProfile(name, ip, sub));
                 }
                 else {
                     if (DNSServers.Count > 0) {
-                        currentProfiles?.Add(new Profile(name, ip, sub, gateway, DNSServers));
+                        currentProfiles?.Add(Profile.CreateStaticProfile(name, ip, sub, gateway, DNSServers));
                     }
                     else {
-                        currentProfiles?.Add(new Profile(name, ip, sub, gateway));
+                        currentProfiles?.Add(Profile.CreateStaticProfile(name, ip, sub, gateway));
                     }
                 }
             }

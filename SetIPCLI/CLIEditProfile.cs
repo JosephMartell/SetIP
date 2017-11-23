@@ -89,14 +89,15 @@ namespace SetIPCLI {
             Profile newProfile = null;
             if (useDHCP.HasValue) {
                 if (useDHCP.Value) {
-                    newProfile = new Profile(newName ?? originalProfile.Name);
+                    newProfile = Profile.CreateDHCPProfile(newName ?? originalProfile.Name);
                 }
                 else {
-                    newProfile = new Profile(newName ?? originalProfile.Name,
-                                             newIP ?? originalProfile.IP,
-                                             newSub ?? originalProfile.Subnet,
-                                             newGW ?? originalProfile.Gateway,
-                                             newDNS ?? originalProfile.DNSServers);
+                    newProfile = Profile.CreateStaticProfile(
+                        newName ?? originalProfile.Name,
+                        newIP ?? originalProfile.IP,
+                        newSub ?? originalProfile.Subnet,
+                        newGW ?? originalProfile.Gateway,
+                        newDNS ?? originalProfile.DNSServers);
                 }
             }
 

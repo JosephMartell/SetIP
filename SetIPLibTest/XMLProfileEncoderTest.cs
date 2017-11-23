@@ -23,7 +23,7 @@ namespace SetIPLibTest
         [TestMethod]
         public void Encoded_profile_decodes_identically()
         {
-            Profile originalProfile = new Profile("Test Static Profile 1",
+            Profile originalProfile = Profile.CreateStaticProfile("Test Static Profile 1",
                 IPAddress.Parse("192.168.170.138"),
                 IPAddress.Parse("255.255.255.250"),
                 IPAddress.Parse("192.168.170.139"),

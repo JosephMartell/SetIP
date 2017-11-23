@@ -20,7 +20,7 @@ namespace SetIPLibTest.CLI
             List<Profile> profiles = new List<Profile>();
             for (int i = 0; i < 4; i++)
             {
-                Profile p = new Profile(
+                Profile p = Profile.CreateDHCPProfile(
                     string.Format("Test Profile {0}", i));
                 profiles.Add(p);
             }

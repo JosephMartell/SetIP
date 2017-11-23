@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SetIPLib {
 
@@ -21,18 +22,41 @@ namespace SetIPLib {
         public List<IPAddress> DNSServers { get; } = new List<IPAddress>();
 
         //TODO: refactor this to use well-named factory methods
-        public Profile(string name) {
+        public static Profile CreateDHCPProfile(string name)
+        {
+            return new Profile(name);
+        }
+
+        private Profile(string name)
+        {
             Name = name;
         }
 
-        public Profile(string name, IPAddress ip, IPAddress subnet) {
+        public static Profile CreateStaticProfile(string name, IPAddress ip, IPAddress subnet)
+        {
+            return new Profile(name, ip, subnet);
+        }
+
+        public static Profile CreateStaticProfile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway)
+        {
+            return new Profile(name, ip, subnet, gateway);
+        }
+
+        public static Profile CreateStaticProfile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway, IEnumerable<IPAddress> dnsServers)
+        {
+            return new Profile(name, ip, subnet, gateway, dnsServers.ToList());
+        }
+
+        private Profile(string name, IPAddress ip, IPAddress subnet)
+        {
             Name = name;
             IP = ip;
             Subnet = subnet;
             UseDHCP = false;
         }
 
-        public Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway) {
+        private Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway)
+        {
             Name = name;
             IP = ip;
             Subnet = subnet;
@@ -40,17 +64,14 @@ namespace SetIPLib {
             Gateway = gateway;
         }
 
-        public Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway, List<IPAddress> dnsServers) {
+        private Profile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway, List<IPAddress> dnsServers)
+        {
             Name = name;
             IP = ip;
             Subnet = subnet;
             UseDHCP = false;
             Gateway = gateway;
             DNSServers = dnsServers;
-        }
-
-        public ProfileGen Morph() {
-            return new ProfileGen(this);
         }
 
         public int CompareTo(Profile other)
@@ -95,27 +116,6 @@ namespace SetIPLib {
 
             Profile otherP = (Profile)obj;
             return Equals(otherP);
-        }
-
-        public class ProfileGen {
-            protected Profile _oldProfile;
-
-            public ProfileGen(Profile p) {
-
-            }
-
-            public ProfileGen Name(string newName) {
-                if (_oldProfile.UseDHCP) {
-                    return new ProfileGen(new Profile(newName));
-                }
-                else {
-                    return new ProfileGen(new Profile(newName, _oldProfile.IP, _oldProfile.Subnet, _oldProfile.Gateway, _oldProfile.DNSServers));
-                }
-            }
-
-            public ProfileGen IP(IPAddress newIP) {
-                return new ProfileGen(new Profile(_oldProfile.Name, newIP, _oldProfile.Subnet, _oldProfile.Gateway, _oldProfile.DNSServers));
-            }
         }
     }
 }
