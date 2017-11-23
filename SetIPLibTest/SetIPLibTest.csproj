@@ -50,6 +50,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLI\CLIDeleteTest.cs" />
+    <Compile Include="MemoryProfileStore.cs" />
     <Compile Include="StreamProfileStoreTest.cs" />
     <Compile Include="XMLProfileEncoderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +60,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SetIPCLI\SetIPCLI.csproj">
+      <Project>{89fda25f-6cfd-4f9e-9a66-96939a141f4b}</Project>
+      <Name>SetIPCLI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SetIPLib\SetIPLib.csproj">
       <Project>{a6bf69e3-44b4-4225-afc7-ff38b1ccc3fb}</Project>
       <Name>SetIPLib</Name>

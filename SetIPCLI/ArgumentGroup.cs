@@ -8,7 +8,7 @@ namespace SetIPCLI {
     /// <summary>
     /// Stores a CLI command and arguments for that command.
     /// </summary>
-    class ArgumentGroup {
+    internal class ArgumentGroup {
 
         /// <summary>
         /// The CLI argument that indicates the start of a command.  Commands are delimited by a '-' character and should be the first argument passed to constructor.
