@@ -29,33 +29,28 @@ namespace SetIPCLI {
         /// <param name="arg"></param>
         /// <returns>A single, executable CLI Command object.</returns>
         public static ICLICommand GetCommand(ArgumentGroup arg) {
-            ICLICommand returnCommand;
             switch (arg.Command.ToUpper()) {
                 case "-A":
                 case "-ADD":
-                    returnCommand = new CLIAddProfile(arg);
-                    break;
+                    return new CLIAddProfile(arg);
+                case "-D":
+                case "-DELETE":
+                    return new CLIDeleteProfile(arg);
                 case "-U":
                 case "-USE":
-                    returnCommand = new CLIUseProfile(arg);
-                    break;
+                    return new CLIUseProfile(arg);
                 case "-L":
                 case "-LIST":
-                    returnCommand = new CLIListProfiles(arg);
-                    break;
+                    return new CLIListProfiles(arg);
                 case "-E":
                 case "-EDIT":
-                    returnCommand = new CLIEditProfile(arg);
-                    break;
+                    return new CLIEditProfile(arg);
                 case "-?":
                 case "-HELP":
-                    returnCommand = new CLIListCommands(arg);
-                    break;
+                    return new CLIListCommands(arg);
                 default:
-                    returnCommand = new CLIUnknown(arg);
-                    break;
+                    return new CLIUnknown(arg);
             }
-            return returnCommand;
         }
     }
 }

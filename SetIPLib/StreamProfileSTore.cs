@@ -24,6 +24,7 @@ namespace SetIPLib
 
         public void Store(IEnumerable<Profile> profiles)
         {
+            FileStream.Position = 0;
             FileStream.Write(Encoder.Header, 0, Encoder.Header.Length);
             foreach (var p in profiles)
             {
@@ -31,7 +32,8 @@ namespace SetIPLib
                 FileStream.Write(pBuffer, 0, pBuffer.Length);
             }
             FileStream.Write(Encoder.Footer, 0, Encoder.Footer.Length);
-            throw new NotImplementedException();
+            FileStream.SetLength(FileStream.Position);
+            FileStream.Flush();
         }
 
         public StreamProfileStore(Stream fileStream, IProfileEncoder encoder)

@@ -13,7 +13,7 @@ namespace SetIPLib
         {
             get
             {
-                return Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF - 8\" standalone=\"no\" ?><Profiles>");
+                return Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><Profiles>");
             }
         }
 
