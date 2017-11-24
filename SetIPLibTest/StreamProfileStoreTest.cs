@@ -14,15 +14,23 @@ namespace SetIPLibTest
     {
         string xmlExample = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><Profiles><profile name=\"test profile\" useDHCP=\"true\" /></Profiles>";
         Profile examplelProfile = Profile.CreateDHCPProfile("test profile");
+        MemoryStream storageStream;
+        StreamProfileStore profileStore;
+
+
+        [TestInitialize]
+        public void Create_stream_and_stream_profile_store()
+        {
+            storageStream = new MemoryStream();
+            profileStore = new StreamProfileStore(storageStream, new XMLProfileEncoder());
+        }
+
 
         [TestMethod]
         public void Decodes_example_profile_correctly()
         {
-            MemoryStream ms = new MemoryStream();
-            ms.Write(UTF8Encoding.UTF8.GetBytes(xmlExample), 0, UTF8Encoding.UTF8.GetBytes(xmlExample).Count());
-
-            StreamProfileStore sps = new StreamProfileStore(ms, new XMLProfileEncoder());
-            var profiles = sps.Retrieve();
+            PopulateMemoryStream(storageStream);
+            var profiles = profileStore.Retrieve();
             var target = from p in profiles
                          where p.Name == "test profile"
                          select p;
@@ -37,50 +45,63 @@ namespace SetIPLibTest
         [TestMethod]
         public void Encodes_example_profile_correctly_as_XML()
         {
-            MemoryStream ms = new MemoryStream();
-            StreamProfileStore sps = new StreamProfileStore(ms, new XMLProfileEncoder());
-
             List<Profile> profiles = new List<Profile>();
+
             profiles.Add(examplelProfile);
-            sps.Store(profiles);
-            string retrievedXML = UTF8Encoding.UTF8.GetString(ms.GetBuffer()).Trim().Replace("\0", "");
-            Assert.AreEqual(xmlExample, retrievedXML);
+            profileStore.Store(profiles);
+
+            Assert.AreEqual(xmlExample, 
+                ExtractXMLFromMemoryStream(storageStream));
         }
 
         [TestMethod]
         public void Overwritten_stream_is_valid_XML()
         {
-            MemoryStream ms = new MemoryStream();
-            ms.Write(UTF8Encoding.UTF8.GetBytes(xmlExample), 0, UTF8Encoding.UTF8.GetByteCount(xmlExample));
-            StreamProfileStore sps = new StreamProfileStore(ms, new XMLProfileEncoder());
-            var profiles = sps.Retrieve().ToList();
+            PopulateMemoryStream(storageStream);
+
+            var profiles = profileStore.Retrieve().ToList();
             profiles.Add(Profile.CreateDHCPProfile("additional test profile"));
-            sps.Store(profiles);
-            string retrievedXML = UTF8Encoding.UTF8.GetString(ms.GetBuffer()).Trim().Replace("\0", "");
+            profileStore.Store(profiles);
 
-            XDocument.Parse(retrievedXML);
-
+            //not sure how to better document this.  The "Assert" for this test would be that
+            //Parse does not throw an exception (well formatted xml)
+            XDocument.Parse(
+                ExtractXMLFromMemoryStream(storageStream));
         }
 
         [TestMethod]
         public void Overwritten_shorter_stream_is_valid_XML()
         {
-            MemoryStream ms = new MemoryStream();
-            ms.Write(UTF8Encoding.UTF8.GetBytes(xmlExample), 0, UTF8Encoding.UTF8.GetByteCount(xmlExample));
-            StreamProfileStore sps = new StreamProfileStore(ms, new XMLProfileEncoder());
-            var profiles = sps.Retrieve().ToList();
+            PopulateMemoryStream(storageStream);
+            var profiles = profileStore.Retrieve().ToList();
             var extraTestProfile = Profile.CreateDHCPProfile("additional test profile");
             profiles.Add(extraTestProfile);
-            sps.Store(profiles);
+            profileStore.Store(profiles);
 
-            var test = sps.Retrieve();
+            var test = profileStore.Retrieve();
             profiles.Remove(extraTestProfile);
-            sps.Store(profiles);
-            string retrievedXML = UTF8Encoding.UTF8.GetString(ms.GetBuffer().Take((int)ms.Length).ToArray()).Trim().Replace("\0", "");
+            profileStore.Store(profiles);
 
-            XDocument.Parse(retrievedXML);
-
+            //not sure how to better document this.  The "Assert" for this test would be that
+            //Parse does not throw an exception (well formatted xml)
+            XDocument.Parse(
+                ExtractXMLFromMemoryStream(storageStream));
         }
 
+        public void PopulateMemoryStream(MemoryStream ms)
+        {
+            ms.Write(
+                UTF8Encoding.UTF8.GetBytes(xmlExample), 
+                0, 
+                UTF8Encoding.UTF8.GetBytes(xmlExample).Count());
+        }
+
+        public string ExtractXMLFromMemoryStream(MemoryStream ms)
+        {
+            int msLength = (int)ms.Length;
+            var bytes = ms.GetBuffer().Take(msLength).ToArray();
+
+            return UTF8Encoding.UTF8.GetString(bytes).Trim();
+        }
     }
 }

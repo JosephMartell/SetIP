@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Net;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
-namespace SetIPLib {
+namespace SetIPLib
+{
 
     public class Profile :
         IComparable<Profile>,
-        IEquatable<Profile> {
+        IEquatable<Profile>
+    {
         public static Profile DHCPDefault = new Profile("DHCP");
+
         public string Name { get; } = string.Empty;
 
         public bool UseDHCP { get; } = true;
@@ -21,15 +24,9 @@ namespace SetIPLib {
 
         public List<IPAddress> DNSServers { get; } = new List<IPAddress>();
 
-        //TODO: refactor this to use well-named factory methods
         public static Profile CreateDHCPProfile(string name)
         {
             return new Profile(name);
-        }
-
-        private Profile(string name)
-        {
-            Name = name;
         }
 
         public static Profile CreateStaticProfile(string name, IPAddress ip, IPAddress subnet)
@@ -45,6 +42,11 @@ namespace SetIPLib {
         public static Profile CreateStaticProfile(string name, IPAddress ip, IPAddress subnet, IPAddress gateway, IEnumerable<IPAddress> dnsServers)
         {
             return new Profile(name, ip, subnet, gateway, dnsServers.ToList());
+        }
+
+        private Profile(string name)
+        {
+            Name = name;
         }
 
         private Profile(string name, IPAddress ip, IPAddress subnet)
@@ -116,6 +118,17 @@ namespace SetIPLib {
 
             Profile otherP = (Profile)obj;
             return Equals(otherP);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = Name.GetHashCode();
+                hash = (13 * hash) + IP.GetHashCode();
+                hash = (13 * hash) + Subnet.GetHashCode();
+                return hash;
+            }
         }
     }
 }
