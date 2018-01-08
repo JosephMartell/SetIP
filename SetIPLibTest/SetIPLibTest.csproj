@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLI\CLIDeleteTest.cs" />
+    <Compile Include="CLI\CLIExportProfileTest.cs" />
     <Compile Include="MemoryProfileStore.cs" />
     <Compile Include="StreamProfileStoreTest.cs" />
     <Compile Include="XMLProfileEncoderTest.cs" />

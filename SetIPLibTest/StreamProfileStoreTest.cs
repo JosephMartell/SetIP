@@ -45,9 +45,8 @@ namespace SetIPLibTest
         [TestMethod]
         public void Encodes_example_profile_correctly_as_XML()
         {
-            List<Profile> profiles = new List<Profile>();
+            List<Profile> profiles = new List<Profile>() { examplelProfile };
 
-            profiles.Add(examplelProfile);
             profileStore.Store(profiles);
 
             Assert.AreEqual(xmlExample, 

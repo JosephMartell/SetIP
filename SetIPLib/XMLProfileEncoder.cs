@@ -28,8 +28,7 @@ namespace SetIPLib
         public IEnumerable<Profile> Decode(byte[] contents)
         {
             var xmlProfiles = GetProfileXMLElements(contents);
-            var profiles = from p in xmlProfiles
-                     select ParseProfileXML(p);
+            var profiles = xmlProfiles.Select(p => ParseProfileXML(p));
             return profiles;
         }
 
@@ -75,32 +74,49 @@ namespace SetIPLib
             string name = xmlProfile.Attribute("name").Value;
             IPAddress ip = IPAddress.Parse(xmlProfile.Element("ip").Value);
             IPAddress subnet = IPAddress.Parse(xmlProfile.Element("subnet").Value);
-            XElement el = xmlProfile.Element("gateway");
-            IPAddress gw = IPAddress.None;
-            if (el != null)
+            IPAddress gw = ParseStaticGWFromXML(xmlProfile.Element("gateway"));
+            List<IPAddress> DNSServers = ParseStaticDNSServersFromXML(xmlProfile.Element("DNSServers"));
+            return ConstructStaticProfile(name, ip, subnet, gw, DNSServers);
+        }
+
+        private IPAddress ParseStaticGWFromXML(XElement gwElement)
+        {
+            if (gwElement == null)
             {
-                gw = IPAddress.Parse(el.Value);
+                return IPAddress.None;
             }
-            List<IPAddress> DNSServers = new List<IPAddress>();
-            el = xmlProfile.Element("DNSServers");
-            if (el != null)
+            else
             {
-                foreach (var server in xmlProfile.Element("DNSServers").Elements("server"))
+                return IPAddress.Parse(gwElement.Value);
+            }
+        }
+
+        private List<IPAddress> ParseStaticDNSServersFromXML(XElement dnsServersElement)
+        {
+            List<IPAddress> DNSServers = new List<IPAddress>();
+            if (dnsServersElement != null)
+            {
+                foreach (var server in dnsServersElement.Elements("server"))
                 {
                     DNSServers.Add(IPAddress.Parse(server.Value));
                 }
             }
+            return DNSServers;
+        }
+
+        private Profile ConstructStaticProfile(string name, IPAddress ip, IPAddress subnet, IPAddress gw, List<IPAddress> dnsServers)
+        {
             if (gw == IPAddress.None)
             {
                 return Profile.CreateStaticProfile(name, ip, subnet);
             }
-            else if (DNSServers.Count == 0)
+            else if (dnsServers.Count == 0)
             {
                 return Profile.CreateStaticProfile(name, ip, subnet, gw);
             }
             else
             {
-                return Profile.CreateStaticProfile(name, ip, subnet, gw, DNSServers);
+                return Profile.CreateStaticProfile(name, ip, subnet, gw, dnsServers);
             }
         }
 
