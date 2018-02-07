@@ -54,6 +54,7 @@
     <Compile Include="CLI\CLIExportProfileTest.cs" />
     <Compile Include="MemoryProfileStore.cs" />
     <Compile Include="StreamProfileStoreTest.cs" />
+    <Compile Include="ProfileApplierTest.cs" />
     <Compile Include="XMLProfileEncoderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
