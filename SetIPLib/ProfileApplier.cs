@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Net;
-
+using System.IO;
+using System.Security.Permissions;
 
 namespace SetIPLib {
 
+    public interface IProfileApplier
+    {
+        void Apply(Profile profile, string interfaceName);
+    }
+
     /// <summary>
-    /// This static class is purely a stop-gap measure until something more robust
-    /// can be implemented.
+    /// This class relies on the Windows program netsh to accomplish the network settings
+    /// changes.
     /// </summary>
-    public static class ProfileApplier {
+    public class ProfileApplier : IProfileApplier {
 
         /// <summary>
         /// Applies the provided profile to the designated interface by running
@@ -23,40 +29,26 @@ namespace SetIPLib {
         /// <param name="interfaceName">The name of the interface to apply the profile to.  
         /// A list of interfaces can be obtained by calling the ListInterfaces method.</param>
         /// <param name="profile">The profile to apply to the named interface.</param>
-        public static void ApplyProfile(string interfaceName, Profile profile) {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "netsh";
-            if (profile.UseDHCP) {
-                startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" dhcp");
-            }
-            else {
-                if (profile.Gateway == IPAddress.None) {
-                    startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()}");
-                }
-                else {
-                    startInfo.Arguments = string.Format($"interface ip set address \"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()} {profile.Gateway.ToString()}"); 
-                }
-            }
+        public static void ApplyProfile(string interfaceName, Profile profile)
+        {
+            SetNicAddress(interfaceName, profile);
+
+            SetDNSServers(interfaceName, profile);
+        }
+
+        private static void SetNicAddress(string interfaceName, Profile profile)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo("netsh");
+            if (profile.UseDHCP)
+                startInfo.Arguments = CreateDHCPNetshArgs(interfaceName);
+            else
+                startInfo.Arguments = CreateStaticNetshArgs(interfaceName, profile);
+
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
-            System.IO.StreamReader output;
-            using (Process netsh = new Process()) {
-                netsh.StartInfo = startInfo;
-                netsh.Start();
-                output = netsh.StandardOutput;
-                netsh.WaitForExit();
-            }
-
-            if (profile.DNSServers.Count > 0) {
-                //right now, only a single DNS server is supported.  In order to have multiple another netsh command would have to be used:
-                //netsh interface ip add dns \"{interfaceName}\" {DNS Address}
-                startInfo.Arguments = $"interface ip set dnsservers \"{interfaceName}\" static {profile.DNSServers[0].ToString()}";
-            }
-            else {
-                startInfo.Arguments = string.Format($"interface ip set dnsservers \"{interfaceName}\" dhcp");
-            }
-
-            using (Process netsh = new Process()) {
+            StreamReader output;
+            using (Process netsh = new Process())
+            {
                 netsh.StartInfo = startInfo;
                 netsh.Start();
                 output = netsh.StandardOutput;
@@ -64,6 +56,44 @@ namespace SetIPLib {
             }
         }
 
+        private const string netshSetAddressPrefix = "interface ip set address ";
+
+        public static string CreateDHCPNetshArgs(string interfaceName)
+        {
+            return netshSetAddressPrefix + $"\"{interfaceName}\" dhcp";
+        }
+
+        public static string CreateStaticNetshArgs(string interfaceName, Profile profile)
+        {
+            return netshSetAddressPrefix + 
+                $"\"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()}" +
+                (profile.Gateway == IPAddress.None ? "" : $" {profile.Gateway.ToString()}");
+        }
+
+        private static void SetDNSServers(string interfaceName, Profile profile)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo("netsh");
+            if (profile.DNSServers.Count > 0)
+            {
+                //right now, only a single DNS server is supported.  In order to have multiple another netsh command would have to be used:
+                //netsh interface ip add dns \"{interfaceName}\" {DNS Address}
+                startInfo.Arguments = $"interface ip set dnsservers \"{interfaceName}\" static {profile.DNSServers[0].ToString()}";
+            }
+            else
+            {
+                startInfo.Arguments = string.Format($"interface ip set dnsservers \"{interfaceName}\" dhcp");
+            }
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            StreamReader output;
+            using (Process netsh = new Process())
+            {
+                netsh.StartInfo = startInfo;
+                netsh.Start();
+                output = netsh.StandardOutput;
+                netsh.WaitForExit();
+            }
+        }
 
         /// <summary>
         /// Returns a list of interface names that a profile can be applied to. They are
@@ -84,6 +114,11 @@ namespace SetIPLib {
 
             return interfaces;
 
+        }
+
+        public void Apply(Profile profile, string interfaceName)
+        {
+            ApplyProfile(interfaceName, profile);
         }
     }
 }
