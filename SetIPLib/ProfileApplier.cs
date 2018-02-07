@@ -11,11 +11,16 @@ using System.Security.Permissions;
 
 namespace SetIPLib {
 
+    public interface IProfileApplier
+    {
+        void Apply(Profile profile, string interfaceName);
+    }
+
     /// <summary>
-    /// This static class relies on the Windows program netsh to accomplish the network settings
+    /// This class relies on the Windows program netsh to accomplish the network settings
     /// changes.
     /// </summary>
-    public static class ProfileApplier {
+    public class ProfileApplier : IProfileApplier {
 
         /// <summary>
         /// Applies the provided profile to the designated interface by running
@@ -33,8 +38,7 @@ namespace SetIPLib {
 
         private static void SetNicAddress(string interfaceName, Profile profile)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "netsh";
+            ProcessStartInfo startInfo = new ProcessStartInfo("netsh");
             if (profile.UseDHCP)
                 startInfo.Arguments = CreateDHCPNetshArgs(interfaceName);
             else
@@ -79,6 +83,8 @@ namespace SetIPLib {
             {
                 startInfo.Arguments = string.Format($"interface ip set dnsservers \"{interfaceName}\" dhcp");
             }
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
             StreamReader output;
             using (Process netsh = new Process())
             {
@@ -108,6 +114,11 @@ namespace SetIPLib {
 
             return interfaces;
 
+        }
+
+        public void Apply(Profile profile, string interfaceName)
+        {
+            ApplyProfile(interfaceName, profile);
         }
     }
 }
