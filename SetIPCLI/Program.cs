@@ -15,40 +15,8 @@ namespace SetIPCLI {
     class Program {
         private static string FilePath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
 
-
-        private static string[] ArgScrubber(string[] args) {
-            for (int i = 0; i < args.Length; i++) {
-                if (args[i].StartsWith("--")) {
-                    args[i] = args[i].Remove(0, 1);
-                }
-                if (args[i].StartsWith("/")) {
-                    args[i] = "-" + args[i].Remove(0, 1);
-                }
-            }
-
-            return args;
-        }
-
-        private static IEnumerable<ArgumentGroup> ParseArguments(string[] args) {
-            args = ArgScrubber(args);
-            List<ArgumentGroup> argGroups = new List<SetIPCLI.ArgumentGroup>();
-            List<string> argGroup = null;
-            foreach (var a in args) {
-                if (a.StartsWith("-")) {
-                    if (argGroup != null) {
-                        argGroups.Add(new ArgumentGroup(argGroup));
-                    }
-                    argGroup = new List<string>();
-                }
-                argGroup.Add(a);
-            }
-            argGroups.Add(new ArgumentGroup(argGroup));
-
-            return argGroups;
-        }
-
         static void Main(string[] args) {
-            var argGroups = ParseArguments(args);
+            var argGroups = ArgumentGroup.ParseArguments(args);
             Flags flags;
 
             flags = ParseFlags(argGroups);
