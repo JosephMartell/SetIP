@@ -21,7 +21,8 @@ namespace SetIPCLI {
 
             flags = ParseFlags(argGroups);
 
-            var commands = CLICommandFactory.GetCommands(argGroups);
+            var commands = CLICommandFactory.GetCommands(argGroups,
+                new CLIListCommands(ArgumentGroup.EmptyGroup));
             IProfileStore store = new StreamProfileStore(
                 new FileStream(FilePath, FileMode.OpenOrCreate), 
                 new XMLProfileEncoder());
