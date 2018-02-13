@@ -32,5 +32,12 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+
+// Version is using semantic versioning.
+// AssemblyVersion has the last digit fixed at 0 to maintain backwards compatability 
+// with minor releases
+[assembly: AssemblyVersion("0.1.0")]
+
+// AssemblyFileVersion follows Semantic Versioning: MAJOR.MINOR.PATCH
+// This is updated with every release, even at the patch level.
+[assembly: AssemblyFileVersion("0.1.1")]

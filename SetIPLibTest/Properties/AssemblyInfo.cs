@@ -15,6 +15,11 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("b66363c1-121c-42c8-b8b8-dc1e2d29feac")]
 
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// Version is using semantic versioning.
+// AssemblyVersion has the last digit fixed at 0 to maintain backwards compatability 
+// with minor releases
+[assembly: AssemblyVersion("0.1.0")]
+
+// AssemblyFileVersion follows Semantic Versioning: MAJOR.MINOR.PATCH
+// This is updated with every release, even at the patch level.
+[assembly: AssemblyFileVersion("0.1.1")]
