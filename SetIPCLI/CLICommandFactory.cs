@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SetIPCLI {
 
@@ -22,6 +23,14 @@ namespace SetIPCLI {
             return commands;
         }
 
+        public static IEnumerable<ICLICommand> GetCommands(IEnumerable<ArgumentGroup> arguments, ICLICommand defaultCommand)
+        {
+            var commands = GetCommands(arguments);
+            if (commands.Count() == 0)
+                return new List<ICLICommand>() { defaultCommand };
+            else
+                return commands;
+        }
 
         /// <summary>
         /// Returns a single, executable CLI Command object.  Any unknown commands are rturned as CLIUnknown.
