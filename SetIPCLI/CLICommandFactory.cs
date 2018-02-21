@@ -55,6 +55,10 @@ namespace SetIPCLI {
                 case "-E":
                 case "-EDIT":
                     return new CLIEditProfile(arg);
+
+                case "-S":
+                case "-SETTING":
+                    return new CLIChangeSetting(arg);
                 case "-?":
                 case "-HELP":
                     return new CLIListCommands(arg);

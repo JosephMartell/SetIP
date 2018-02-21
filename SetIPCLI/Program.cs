@@ -13,8 +13,6 @@ namespace SetIPCLI {
     }
 
     class Program {
-        private static string FilePath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SetIP\\profiles.xml");
-
         static void Main(string[] args) {
             var argGroups = ArgumentGroup.ParseArguments(args);
             Flags flags;
@@ -23,8 +21,10 @@ namespace SetIPCLI {
 
             var commands = CLICommandFactory.GetCommands(argGroups,
                 new CLIListCommands(ArgumentGroup.EmptyGroup));
+
+            string filePath = Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation);
             IProfileStore store = new StreamProfileStore(
-                new FileStream(FilePath, FileMode.OpenOrCreate), 
+                new FileStream(filePath, FileMode.OpenOrCreate), 
                 new XMLProfileEncoder());
             foreach (var c in commands) {
                 try {
