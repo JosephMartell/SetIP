@@ -33,6 +33,12 @@ namespace SetIPCLI {
                 catch (UnknownCommandException e) {
                     Console.WriteLine(e.Message);
                 }
+                catch (System.Xml.XmlException e)
+                {
+                    Console.WriteLine(e.Message);
+                    if (e.InnerException != null)
+                        Console.WriteLine($"{e.InnerException.Message}");
+                }
             }
         }
 

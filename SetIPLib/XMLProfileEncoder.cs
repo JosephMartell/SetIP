@@ -27,6 +27,10 @@ namespace SetIPLib
 
         public IEnumerable<Profile> Decode(byte[] contents)
         {
+            if (contents.Length == 0)
+            {
+                return new List<Profile>();
+            }
             var xmlProfiles = GetProfileXMLElements(contents);
             var profiles = xmlProfiles.Select(p => ParseProfileXML(p));
             return profiles;
@@ -40,9 +44,9 @@ namespace SetIPLib
                 XDocument document = XDocument.Parse(xmlString);
                 return document.Element("Profiles").Elements("profile");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new System.Xml.XmlException("The profile storage file was not properly formatted.");
+                throw new System.Xml.XmlException("The profile storage file was not properly formatted.", e);
             }
         }
 
