@@ -47,9 +47,9 @@ namespace SetIPCLI
             summary.Add(string.Format(format, "Change Setting", "-s SettingName \"Setting Value\""));
             summary.Add(string.Format(format, "", "quotes are only necessary if value contains spaces"));
             summary.Add(string.Format(format, "", "Valid Settings:"));
-            summary.Add(string.Format(format, "", " ProfileFileLocation: Any valid file path."));
-            summary.Add(string.Format(format, "", "                      System variables are allowed"));
-            summary.Add(string.Format(format, "", "                      (e.g.: %APPDATA%)"));
+            summary.Add(string.Format(format, "", "ProfileFileLocation: Any valid file path."));
+            summary.Add(string.Format(format, "", "                     System variables are allowed"));
+            summary.Add(string.Format(format, "", "                     (e.g.: %APPDATA%)"));
 
             return summary;
         }
