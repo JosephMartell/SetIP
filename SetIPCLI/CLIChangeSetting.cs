@@ -19,7 +19,11 @@ namespace SetIPCLI
 
         public void Execute(ref IProfileStore store)
         {
-            if (Arguments.Arguments.Count() == 1)
+            if (Arguments.Arguments.Count() == 0)
+            {
+                CommandSummary().ToList().ForEach(Console.WriteLine);
+            }
+            else if (Arguments.Arguments.Count() == 1)
             {
                 DisplaySetting(Arguments.Arguments.First());
             }
@@ -31,12 +35,34 @@ namespace SetIPCLI
 
         private void DisplaySetting(string settingName)
         {
-            Console.WriteLine(Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation));
+            switch (settingName.ToUpper())
+            {
+                case "DEFAULTNIC":
+                    Console.WriteLine(UserSettings.Default.DefaultNIC);
+                    break;
+                case "PROFILEFILELOCATION":
+                    Console.WriteLine(Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation));
+                    break;
+                default:
+                    Console.WriteLine($"There is no setting named \"{settingName}\". For a list of valid setting names enter -s with no further commands.");
+                    break;
+            }
         }
 
         private void UpdateSetting(string settingName, IEnumerable<string> parameters)
         {
-            UserSettings.Default.ProfileFileLocation = parameters.First();
+            switch (settingName.ToUpper())
+            {
+                case "DEFAULTNIC":
+                    UserSettings.Default.DefaultNIC = parameters.First();
+                    break;
+                case "PROFILEFILELOCATION":
+                    UserSettings.Default.ProfileFileLocation = parameters.First();
+                    break;
+                default:
+                    Console.WriteLine($"There is no setting named \"{settingName}\". For a list of valid setting names enter -s with no further commands.");
+                    return;
+            }
             UserSettings.Default.Save();
         }
 
@@ -46,10 +72,12 @@ namespace SetIPCLI
             List<string> summary = new List<string>();
             summary.Add(string.Format(format, "Change Setting", "-s SettingName \"Setting Value\""));
             summary.Add(string.Format(format, "", "quotes are only necessary if value contains spaces"));
-            summary.Add(string.Format(format, "", "Valid Settings:"));
+            summary.Add(string.Format(format, "", "Valid Setting Names:"));
             summary.Add(string.Format(format, "", "ProfileFileLocation: Any valid file path."));
             summary.Add(string.Format(format, "", "                     System variables are allowed"));
             summary.Add(string.Format(format, "", "                     (e.g.: %APPDATA%)"));
+            summary.Add(string.Format(format, "", "DefaultNIC: Default NIC to use when applying profiles."));
+            summary.Add(string.Format(format, "", "            Name is not case sensitive."));
 
             return summary;
         }
