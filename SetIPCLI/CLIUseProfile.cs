@@ -10,7 +10,7 @@ namespace SetIPCLI {
 
         public void Execute(ref IProfileStore store) {
             string profileName = Arguments.Arguments.DefaultIfEmpty(string.Empty).FirstOrDefault();
-            string interfaceName = Arguments.Arguments.DefaultIfEmpty("Local Area Connection").Skip(1).FirstOrDefault();
+            string interfaceName = Arguments.Arguments.Skip(1).DefaultIfEmpty("Local Area Connection").FirstOrDefault();
             var profiles = store.Retrieve();
 
             //If the supplied profile name is not found, DHCP is used instead.
