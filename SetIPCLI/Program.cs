@@ -23,6 +23,12 @@ namespace SetIPCLI {
                 new CLIListCommands(ArgumentGroup.EmptyGroup));
 
             string filePath = Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation);
+            string directoryPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             IProfileStore store = new StreamProfileStore(
                 new FileStream(filePath, FileMode.OpenOrCreate), 
                 new XMLProfileEncoder());
