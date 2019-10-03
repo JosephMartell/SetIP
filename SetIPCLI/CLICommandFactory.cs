@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SetIPLib;
 
 namespace SetIPCLI {
 
@@ -47,13 +48,17 @@ namespace SetIPCLI {
                     return new CLIDeleteProfile(arg);
                 case "-U":
                 case "-USE":
-                    return new CLIUseProfile(arg);
+                    return new CLIUseProfile(arg, new ProfileApplier());
                 case "-L":
                 case "-LIST":
                     return new CLIListProfiles(arg);
                 case "-E":
                 case "-EDIT":
                     return new CLIEditProfile(arg);
+
+                case "-S":
+                case "-SETTING":
+                    return new CLIChangeSetting(arg);
                 case "-?":
                 case "-HELP":
                     return new CLIListCommands(arg);

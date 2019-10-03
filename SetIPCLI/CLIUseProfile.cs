@@ -6,9 +6,11 @@ namespace SetIPCLI {
     class CLIUseProfile : ICLICommand {
 
         public ArgumentGroup Arguments { get; }
+        public IProfileApplier Applier { get; }
 
         public void Execute(ref IProfileStore store) {
             string profileName = Arguments.Arguments.DefaultIfEmpty(string.Empty).FirstOrDefault();
+            string interfaceName = Arguments.Arguments.Skip(1).DefaultIfEmpty("Local Area Connection").FirstOrDefault();
             var profiles = store.Retrieve();
 
             //If the supplied profile name is not found, DHCP is used instead.
@@ -16,12 +18,12 @@ namespace SetIPCLI {
                              where p.Name.ToUpper() == profileName.ToUpper()
                              select p).DefaultIfEmpty(Profile.DHCPDefault).First();
 
-            //Eventually, the adapter name will be one of the arguments that can be passed.
-            ProfileApplier.ApplyProfile("Local Area Connection", target);
+            Applier.Apply(target, interfaceName);
         }
 
-        public CLIUseProfile(ArgumentGroup args) {
+        public CLIUseProfile(ArgumentGroup args, IProfileApplier applier) {
             Arguments = args;
+            Applier = applier;
         }
 
         public string Help() {
@@ -37,9 +39,9 @@ namespace SetIPCLI {
             return new string[] 
             {
                 string.Format(
-                    "{0, -15} {1, -63}",
+                    "{0, -15} {1, -30}",
                     "Use Profile",
-                    "-u \"Profile Name\"")
+                    "-u \"Profile Name\" \"Interface Name\"")
             };
         }
 

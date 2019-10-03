@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CLIAddProfile.cs" />
     <Compile Include="ArgumentGroup.cs" />
+    <Compile Include="CLIChangeSetting.cs" />
     <Compile Include="CLICommandFactory.cs" />
     <Compile Include="CLIDeleteProfile.cs" />
     <Compile Include="CLIListCommands.cs" />
@@ -55,10 +56,20 @@
     <Compile Include="CLIEditProfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserSettings.cs" />
+    <Compile Include="UserSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>UserSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="UnknownCommandException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="UserSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>UserSettings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SetIPLib\SetIPLib.csproj">
