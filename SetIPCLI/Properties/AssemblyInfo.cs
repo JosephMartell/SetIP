@@ -40,4 +40,4 @@ using System.Runtime.InteropServices;
 
 // AssemblyFileVersion follows Semantic Versioning: MAJOR.MINOR.PATCH
 // This is updated with every release, even at the patch level.
-[assembly: AssemblyFileVersion("0.2.0")]
+[assembly: AssemblyFileVersion("0.2.1")]
