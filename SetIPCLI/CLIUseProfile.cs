@@ -8,9 +8,17 @@ namespace SetIPCLI {
         public ArgumentGroup Arguments { get; }
         public IProfileApplier Applier { get; }
 
+        public string DefaultNIC { get; }
+
+        public CLIUseProfile(ArgumentGroup args, IProfileApplier applier, UserSettings userSettings) {
+            Arguments = args;
+            Applier = applier;
+            DefaultNIC = userSettings.DefaultNIC;
+        }
+
         public void Execute(ref IProfileStore store) {
             string profileName = Arguments.Arguments.DefaultIfEmpty(string.Empty).FirstOrDefault();
-            string interfaceName = Arguments.Arguments.Skip(1).DefaultIfEmpty("Local Area Connection").FirstOrDefault();
+            string interfaceName = Arguments.Arguments.Skip(1).DefaultIfEmpty(DefaultNIC).FirstOrDefault();
             var profiles = store.Retrieve();
 
             //If the supplied profile name is not found, DHCP is used instead.
@@ -19,11 +27,6 @@ namespace SetIPCLI {
                              select p).DefaultIfEmpty(Profile.DHCPDefault).First();
 
             Applier.Apply(target, interfaceName);
-        }
-
-        public CLIUseProfile(ArgumentGroup args, IProfileApplier applier) {
-            Arguments = args;
-            Applier = applier;
         }
 
         public string Help() {

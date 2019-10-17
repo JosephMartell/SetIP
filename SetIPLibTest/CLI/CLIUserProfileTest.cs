@@ -32,7 +32,7 @@ namespace SetIPLibTest.CLI
             MockProfileApplier mock = new MockProfileApplier();
             ArgumentGroup args = new ArgumentGroup(new string[] { "-u", "test", "test interface" });
 
-            CLIUseProfile use = new CLIUseProfile(args, mock);
+            CLIUseProfile use = new CLIUseProfile(args, mock, new UserSettings());
             IProfileStore mps = new MemoryProfileStore();
 
             use.Execute(ref mps);
