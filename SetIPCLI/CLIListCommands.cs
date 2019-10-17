@@ -28,7 +28,7 @@ namespace SetIPCLI {
             new CLIAddProfile(ArgumentGroup.EmptyGroup).CommandSummary().ToList().ForEach(Console.WriteLine);
             new CLIEditProfile(ArgumentGroup.EmptyGroup).CommandSummary().ToList().ForEach(Console.WriteLine);
             new CLIListProfiles(ArgumentGroup.EmptyGroup).CommandSummary().ToList().ForEach(Console.WriteLine);
-            new CLIUseProfile(ArgumentGroup.EmptyGroup, null).CommandSummary().ToList().ForEach(Console.WriteLine);
+            new CLIUseProfile(ArgumentGroup.EmptyGroup, null, new UserSettings()).CommandSummary().ToList().ForEach(Console.WriteLine);
             new CLIChangeSetting(ArgumentGroup.EmptyGroup).CommandSummary().ToList().ForEach(Console.WriteLine);
         }
 
