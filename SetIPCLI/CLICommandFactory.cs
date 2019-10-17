@@ -48,7 +48,7 @@ namespace SetIPCLI {
                     return new CLIDeleteProfile(arg);
                 case "-U":
                 case "-USE":
-                    return new CLIUseProfile(arg, new ProfileApplier());
+                    return new CLIUseProfile(arg, new ProfileApplier(), new UserSettings());
                 case "-L":
                 case "-LIST":
                     return new CLIListProfiles(arg);
