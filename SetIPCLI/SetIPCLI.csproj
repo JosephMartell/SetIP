@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SetIPCLI</RootNamespace>
     <AssemblyName>SetIPCLI</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CLImber, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JM.CLImber.0.2.0\lib\netstandard2.0\CLImber.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,15 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLIAddProfile.cs" />
+    <Compile Include="AddProfile.cs" />
     <Compile Include="ArgumentGroup.cs" />
-    <Compile Include="CLIChangeSetting.cs" />
-    <Compile Include="CLICommandFactory.cs" />
+    <Compile Include="ChangeSettings.cs" />
     <Compile Include="CLIDeleteProfile.cs" />
-    <Compile Include="CLIListCommands.cs" />
     <Compile Include="CLIListProfiles.cs" />
     <Compile Include="CLIUnknown.cs" />
     <Compile Include="CLIUseProfile.cs" />
+    <Compile Include="DefaultUserSettings.cs" />
+    <Compile Include="IUserSettings.cs" />
     <Compile Include="ICLICommand.cs" />
     <Compile Include="CLIEditProfile.cs" />
     <Compile Include="Program.cs" />
@@ -66,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="UserSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>UserSettings.Designer.cs</LastGenOutput>
