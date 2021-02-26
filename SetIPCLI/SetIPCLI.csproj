@@ -48,15 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddProfile.cs" />
-    <Compile Include="ArgumentGroup.cs" />
     <Compile Include="ChangeSettings.cs" />
-    <Compile Include="CLIDeleteProfile.cs" />
-    <Compile Include="CLIListProfiles.cs" />
-    <Compile Include="CLIUnknown.cs" />
-    <Compile Include="CLIUseProfile.cs" />
+    <Compile Include="DeleteProfile.cs" />
+    <Compile Include="ListProfiles.cs" />
+    <Compile Include="UseProfile.cs" />
     <Compile Include="DefaultUserSettings.cs" />
     <Compile Include="IUserSettings.cs" />
-    <Compile Include="ICLICommand.cs" />
     <Compile Include="CLIEditProfile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -62,15 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLI\CLIDeleteTest.cs" />
+    <Compile Include="CLI\DeleteTest.cs" />
     <Compile Include="CLI\CLIExportProfileTest.cs" />
-    <Compile Include="CLI\CLIUserProfileTest.cs" />
+    <Compile Include="CLI\UseProfileTest.cs" />
     <Compile Include="CLI\ChangeSettingTests.cs" />
     <Compile Include="CLI\AddProfileTests.cs" />
     <Compile Include="MemoryProfileStore.cs" />
     <Compile Include="StreamProfileStoreTest.cs" />
     <Compile Include="ProfileApplierTest.cs" />
-    <Compile Include="ArgumentGroupTest.cs" />
     <Compile Include="XMLProfileEncoderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
