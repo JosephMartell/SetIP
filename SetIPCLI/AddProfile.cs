@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using CLImber;
 using SetIPLib;
+using System.Linq;
 using System.Net;
-using CLImber;
 
 namespace SetIPCLI
 {
-    [CommandClass("add")]
+    [CommandClass("add", ShortDescription = "Adds a new IP profile to the storage file")]
     public class AddProfile
     {
 
@@ -16,14 +16,14 @@ namespace SetIPCLI
 
         public IProfileStore Store { get; }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Creates a new profile with the supplied name that uses DHCP.")]
         public void AddDynamicProfile(string profileName)
         {
             var updatedProfiles = Store.Retrieve().Append(Profile.CreateDHCPProfile(profileName));
             Store.Store(updatedProfiles);
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Creates a new profile with the supplied name and static IP address/subnet.")]
         public void AddStaticProfile(string profileName, IPAddress ip, IPAddress subnetMask)
         {
             var profiles = Store.Retrieve();
@@ -31,7 +31,7 @@ namespace SetIPCLI
             Store.Store(profiles.Append(newProfile));
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Creates a new profile with the supplied name, static IP address/subnet and the supplied gateway.")]
         public void AddStaticProfile(string profileName, IPAddress ip, IPAddress subnetMask, IPAddress gateway)
         {
             var profiles = Store.Retrieve();
@@ -39,7 +39,7 @@ namespace SetIPCLI
             Store.Store(profiles.Append(newProfile));
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Creates a new profile with the supplied name, static IP address/subnet, gateway, and DNS address.")]
         public void AddStaticProfile(string profileName, IPAddress ip, IPAddress subnetMask, IPAddress gateway, IPAddress DNS)
         {
             var profiles = Store.Retrieve();

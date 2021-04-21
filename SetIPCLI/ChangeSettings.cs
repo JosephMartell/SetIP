@@ -1,9 +1,9 @@
-﻿using System;
-using CLImber;
+﻿using CLImber;
+using System;
 
 namespace SetIPCLI
 {
-    [CommandClass("setting")]
+    [CommandClass("setting", ShortDescription = "Used to show and update user settings for the SetIP application.")]
     public class ChangeSettings
     {
         public IUserSettings AppSettings { get; }
@@ -12,13 +12,13 @@ namespace SetIPCLI
             AppSettings = appSettings;
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Lists all available settings.")]
         public void ListAllKnownSettings()
         {
             Console.WriteLine($"Valid settings are: \nDefaultNIC\nProfileFileLocation");
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Shows the current value for a setting")]
         public void EchoCurrentSetting(string settingName)
         {
             switch (settingName.ToUpper())
@@ -35,7 +35,7 @@ namespace SetIPCLI
             }
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Updates a setting with the provided value")]
         public void UpdateSetting(string settingName, string newValue)
         {
             switch (settingName.ToUpper())

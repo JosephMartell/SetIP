@@ -1,9 +1,6 @@
-﻿using System;
+﻿using SetIPLib;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SetIPLib;
 
 namespace SetIPLibTest
 {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CLImber;
+﻿using CLImber;
 using SetIPLib;
+using System.Linq;
 
 namespace SetIPCLI
 {
-    [CommandClass("delete")]
+    [CommandClass("delete", ShortDescription = "Deletes a profile from the storage file.")]
     public class DeleteProfile
     {
         public DeleteProfile(IProfileStore store)
@@ -18,7 +14,7 @@ namespace SetIPCLI
 
         public IProfileStore Store { get; }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Delets a profile with the provided name.")]
         public void DeleteProfileByName(string profileName)
         {
             if (profileName != string.Empty)

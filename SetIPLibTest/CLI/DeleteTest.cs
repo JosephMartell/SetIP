@@ -1,5 +1,4 @@
-﻿using Xunit;
-using FluentAssertions;
+﻿using FluentAssertions;
 using SetIPCLI;
 using System.Linq;
 

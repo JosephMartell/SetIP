@@ -1,11 +1,11 @@
-﻿using Xunit;
-using System;
+﻿using FluentAssertions;
 using SetIPCLI;
 using SetIPLib;
+using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Linq;
-using FluentAssertions;
+using System.Net;
+using Xunit;
 
 namespace SetIPLibTest.CLI
 {
@@ -17,7 +17,7 @@ namespace SetIPLibTest.CLI
         public List<Profile> Profiles { get; private set; } = new List<Profile>()
         {
             Profile.CreateDHCPProfile("profile 1"),
-            Profile.CreateStaticProfile("static 1 ", 
+            Profile.CreateStaticProfile("static 1",
                 IPAddress.Parse("192.168.1.99"),
                 IPAddress.Parse("255.255.255.0")),
             Profile.CreateStaticProfile("static 2",

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="CLI\DeleteTest.cs" />
     <Compile Include="CLI\CLIExportProfileTest.cs" />
+    <Compile Include="CLI\EditProfileTests.cs" />
     <Compile Include="CLI\UseProfileTest.cs" />
     <Compile Include="CLI\ChangeSettingTests.cs" />
     <Compile Include="CLI\AddProfileTests.cs" />

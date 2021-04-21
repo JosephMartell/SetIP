@@ -1,14 +1,12 @@
-﻿using System;
+﻿using CLImber;
+using SetIPLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CLImber;
-using SetIPLib;
 
 namespace SetIPCLI
 {
-    [CommandClass("list")]
+    [CommandClass("list", ShortDescription = "List all profiles")]
     public class ListProfiles
     {
         public IProfileStore Store { get; }
@@ -17,7 +15,7 @@ namespace SetIPCLI
             Store = store;
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "List all available profiles.")]
         public void ListAllProfiles()
         {
             IEnumerable<Profile> profiles = Store.Retrieve();
@@ -29,6 +27,7 @@ namespace SetIPCLI
 
         }
 
+        [CommandHandler(ShortDescription = "Lists all profiles with a name that start with the provided filter.")]
         public void ShowFilteredProfileList(string filter)
         {
             IEnumerable<Profile> profiles = Store.Retrieve().Where((p, b) => p.Name.ToUpper().Contains(filter.ToUpper()));

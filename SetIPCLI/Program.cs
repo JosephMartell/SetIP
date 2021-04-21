@@ -1,27 +1,17 @@
-﻿using SetIPLib;
+﻿using CLImber;
+using SetIPLib;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Diagnostics;
-using CLImber;
-using System.Linq;
 
-namespace SetIPCLI {
+namespace SetIPCLI
+{
 
-    public class ArgToIPConverter
-        : IArgumentTypeConverter
+    class Program
     {
-        public object ConvertArgument(string arg)
+        private static readonly CLIHandler _handler = new CLIHandler();
+        static void Main(string[] args)
         {
-            return IPAddress.Parse(arg);
-        }
-    }
-
-    class Program {
-        private static CLIHandler _handler = new CLIHandler();
-        static void Main(string[] args) {
 
             string filePath = Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation);
             string directoryPath = Path.GetDirectoryName(filePath);
@@ -31,11 +21,11 @@ namespace SetIPCLI {
             }
 
             IProfileStore store = new StreamProfileStore(
-                new FileStream(filePath, FileMode.OpenOrCreate), 
+                new FileStream(filePath, FileMode.OpenOrCreate),
                 new XMLProfileEncoder());
 
             _handler.RegisterResource<IProfileStore>(store)
-                .RegisterTypeConverter<IPAddress>(new ArgToIPConverter())
+                .RegisterTypeConverter<IPAddress>(s => IPAddress.Parse(s))
                 .RegisterResource<IProfileApplier>(new ProfileApplier())
                 .RegisterResource<IUserSettings>(new DefaultUserSettings());
 

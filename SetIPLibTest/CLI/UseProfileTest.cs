@@ -1,8 +1,8 @@
-﻿using SetIPLib;
+﻿using FluentAssertions;
 using SetIPCLI;
-using Xunit;
-using FluentAssertions;
+using SetIPLib;
 using System.Linq;
+using Xunit;
 
 namespace SetIPLibTest.CLI
 {

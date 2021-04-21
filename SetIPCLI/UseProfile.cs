@@ -1,13 +1,11 @@
-﻿using SetIPLib;
+﻿using CLImber;
+using SetIPLib;
 using System.Linq;
-using System.Collections.Generic;
-using CLImber;
-using System;
 
 namespace SetIPCLI
 {
 
-    [CommandClass("use")]
+    [CommandClass("use", ShortDescription = "Applies an IP profile to the current system.")]
     public class UseProfile
     {
         public IProfileStore Store { get; }
@@ -21,7 +19,7 @@ namespace SetIPCLI
             Settings = settings;
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Applies the named profile to the default network adapter.")]
         public void UseProfileByName(string profileName)
         {
             var profiles = Store.Retrieve();
@@ -34,13 +32,13 @@ namespace SetIPCLI
             Applier.Apply(target, Settings.DefaultNIC);
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Sets the default adapter to use DHCP for IP and DNS settings.")]
         public void UseDefaultDHCP()
         {
             Applier.Apply(Profile.DHCPDefault, Settings.DefaultNIC);
         }
 
-        [CommandHandler]
+        [CommandHandler(ShortDescription = "Applies the named profile to the specified network interface.")]
         public void UseProfileOnNIC(string profileName, string interfaceName)
         {
             var profiles = Store.Retrieve();
