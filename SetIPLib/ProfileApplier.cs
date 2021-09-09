@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.Net;
 using System.IO;
-using System.Security.Permissions;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 
-namespace SetIPLib {
+namespace SetIPLib
+{
 
     public interface IProfileApplier
     {
@@ -20,7 +17,8 @@ namespace SetIPLib {
     /// This class relies on the Windows program netsh to accomplish the network settings
     /// changes.
     /// </summary>
-    public class ProfileApplier : IProfileApplier {
+    public class ProfileApplier : IProfileApplier
+    {
 
         /// <summary>
         /// Applies the provided profile to the designated interface by running
@@ -65,9 +63,9 @@ namespace SetIPLib {
 
         public static string CreateStaticNetshArgs(string interfaceName, Profile profile)
         {
-            return netshSetAddressPrefix + 
-                $"\"{interfaceName}\" static {profile.IP.ToString()} {profile.Subnet.ToString()}" +
-                (profile.Gateway == IPAddress.None ? "" : $" {profile.Gateway.ToString()}");
+            return netshSetAddressPrefix +
+                $"\"{interfaceName}\" static {profile.IP} {profile.Subnet}" +
+                (profile.Gateway == IPAddress.None ? "" : $" {profile.Gateway}");
         }
 
         private static void SetDNSServers(string interfaceName, Profile profile)
@@ -77,7 +75,7 @@ namespace SetIPLib {
             {
                 //right now, only a single DNS server is supported.  In order to have multiple another netsh command would have to be used:
                 //netsh interface ip add dns \"{interfaceName}\" {DNS Address}
-                startInfo.Arguments = $"interface ip set dnsservers \"{interfaceName}\" static {profile.DNSServers[0].ToString()}";
+                startInfo.Arguments = $"interface ip set dnsservers \"{interfaceName}\" static {profile.DNSServers[0]}";
             }
             else
             {
@@ -100,7 +98,8 @@ namespace SetIPLib {
         /// not guaranteed to be valid and not all valid interfaces may be listed.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<string> ListInterfaces() {
+        public static IEnumerable<string> ListInterfaces()
+        {
             NetworkInterfaceType validTypes = NetworkInterfaceType.Ethernet |
                                               NetworkInterfaceType.Wireless80211 |
                                               NetworkInterfaceType.Ethernet3Megabit |

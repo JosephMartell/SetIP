@@ -1,26 +1,17 @@
-﻿using SetIPLib;
+﻿using CLImber;
+using SetIPLib;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Diagnostics;
 
-namespace SetIPCLI {
+namespace SetIPCLI
+{
 
-    public enum Flags {
-        CommandList = 1
-    }
-
-    class Program {
-        static void Main(string[] args) {
-            var argGroups = ArgumentGroup.ParseArguments(args);
-            Flags flags;
-
-            flags = ParseFlags(argGroups);
-
-            var commands = CLICommandFactory.GetCommands(argGroups,
-                new CLIListCommands(ArgumentGroup.EmptyGroup));
+    class Program
+    {
+        private static readonly CLIHandler _handler = new CLIHandler();
+        static void Main(string[] args)
+        {
 
             string filePath = Environment.ExpandEnvironmentVariables(UserSettings.Default.ProfileFileLocation);
             string directoryPath = Path.GetDirectoryName(filePath);
@@ -30,62 +21,16 @@ namespace SetIPCLI {
             }
 
             IProfileStore store = new StreamProfileStore(
-                new FileStream(filePath, FileMode.OpenOrCreate), 
+                new FileStream(filePath, FileMode.OpenOrCreate),
                 new XMLProfileEncoder());
-            foreach (var c in commands) {
-                try {
-                    c.Execute(ref store);
-                }
-                catch (UnknownCommandException e) {
-                    Console.WriteLine(e.Message);
-                }
-                catch (System.Xml.XmlException e)
-                {
-                    Console.WriteLine(e.Message);
-                    if (e.InnerException != null)
-                        Console.WriteLine($"{e.InnerException.Message}");
-                }
-            }
+
+            _handler.RegisterResource<IProfileStore>(store)
+                .RegisterTypeConverter<IPAddress>(s => IPAddress.Parse(s))
+                .RegisterResource<IProfileApplier>(new ProfileApplier())
+                .RegisterResource<IUserSettings>(new DefaultUserSettings());
+
+            _handler.Handle(args);
         }
 
-
-        static Flags ParseFlags(IEnumerable<ArgumentGroup> argGroups) {
-            return Flags.CommandList;
-        }
-
-        //TEST METHODS - not used in normal execution
-        //These should be moved to a test project.
-        
-        //private static ProfileFileStore store = new ProfileFileStore();
-
-        //static void TestStorage() {
-        //    List<Profile> profiles = new List<Profile>();
-        //    profiles.Add(new Profile("Test 1"));
-        //    profiles.Add(new Profile("Test 2", IPAddress.Parse("192.168.1.1"), IPAddress.Parse("255.255.255.0")));
-        //    store.Store(profiles);
-        //}
-
-        //static void TestRetrieval() {
-        //    IEnumerable<Profile> readProfiles = store.Retrieve();
-        //}
-
-        //static void TestInterfaceList() {
-        //    var interfaces = ProfileApplier.ListInterfaces();
-        //    foreach (var i in interfaces) {
-        //        Console.WriteLine(i);
-        //    }
-        //}
-
-        //static void TestApply() {
-        //    Profile pStatic = new Profile("Test Static",
-        //                            IPAddress.Parse("10.10.10.50"),
-        //                            IPAddress.Parse("255.255.0.0"));
-        //    ProfileApplier.ApplyProfile("Wireless Network Connection", pStatic);
-
-        //    System.Threading.Thread.Sleep(20000);
-
-        //    Profile pDynamic = new Profile("Test Dynamic");
-        //    ProfileApplier.ApplyProfile("Wireless Network Connection", pDynamic);
-        //}
     }
 }
