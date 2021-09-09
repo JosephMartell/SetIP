@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CLImber, Version=0.5.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JM.CLImber.0.5.3\lib\netstandard2.0\CLImber.dll</HintPath>
+    <Reference Include="CLImber, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JM.CLImber.0.6.0\lib\netstandard2.0\CLImber.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
