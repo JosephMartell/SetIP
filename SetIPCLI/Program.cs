@@ -28,7 +28,9 @@ namespace SetIPCLI
                 .RegisterTypeConverter<IPAddress>(s => IPAddress.Parse(s))
                 .RegisterResource<IProfileApplier>(new ProfileApplier())
                 .RegisterResource<IUserSettings>(new DefaultUserSettings());
-
+            _handler.ProgramDescription = "SetIPCLI is a command line interface to store, document, and apply network configurations. \n" +
+                                         "It was designed to help people who routinely travel between multiple locations and work \n" +
+                                         "on networks that do not always provide DHCP services.";
             _handler.Handle(args);
         }
 
