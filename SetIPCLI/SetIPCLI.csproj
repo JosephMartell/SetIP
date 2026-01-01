@@ -47,11 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters.cs" />
     <Compile Include="AddProfile.cs" />
     <Compile Include="ChangeSettings.cs" />
     <Compile Include="DeleteProfile.cs" />
     <Compile Include="EditProfile.cs" />
+    <Compile Include="ExportProfile.cs" />
     <Compile Include="ListProfiles.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="UseProfile.cs" />
     <Compile Include="DefaultUserSettings.cs" />
     <Compile Include="IUserSettings.cs" />
