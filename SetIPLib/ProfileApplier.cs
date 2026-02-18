@@ -42,14 +42,12 @@ namespace SetIPLib
             else
                 startInfo.Arguments = CreateStaticNetshArgs(interfaceName, profile);
 
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            StreamReader output;
+            startInfo.UseShellExecute = true;
+            startInfo.Verb = "runas";
             using (Process netsh = new Process())
             {
                 netsh.StartInfo = startInfo;
                 netsh.Start();
-                output = netsh.StandardOutput;
                 netsh.WaitForExit();
             }
         }

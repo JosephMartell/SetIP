@@ -53,6 +53,7 @@
     <Compile Include="DeleteProfile.cs" />
     <Compile Include="EditProfile.cs" />
     <Compile Include="ExportProfile.cs" />
+    <Compile Include="ImportProfiles.cs" />
     <Compile Include="ListProfiles.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="UseProfile.cs" />
